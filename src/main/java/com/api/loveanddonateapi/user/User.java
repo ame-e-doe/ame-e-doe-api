@@ -8,7 +8,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -20,14 +26,14 @@ import java.util.Collections;
 public class User implements UserDetails {
 
     @SequenceGenerator(
-            name = "user",
-            sequenceName = "user",
+            name = "user_sequence",
+            sequenceName = "user_sequence",
             allocationSize = 1
     )
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "user"
+            generator = "user_sequence"
     )
     private Long id;
     private String name;
