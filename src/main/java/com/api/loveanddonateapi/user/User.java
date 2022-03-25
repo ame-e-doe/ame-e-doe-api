@@ -20,14 +20,14 @@ import java.util.Collections;
 public class User implements UserDetails {
 
     @SequenceGenerator(
-            name = "love_user",
-            sequenceName = "love_user",
+            name = "user",
+            sequenceName = "user",
             allocationSize = 1
     )
     @Id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "love_user"
+            generator = "user"
     )
     private Long id;
     private String name;
@@ -38,19 +38,13 @@ public class User implements UserDetails {
     private Boolean locked;
     private Boolean enabled;
 
-    public User( String name,
-                 String email,
+    public User( String email,
                  String password,
-                 UserRole userRole,
-                 Boolean locked,
-                 Boolean enabled ) {
-
-        this.name = name;
+                 UserRole userRole
+    ) {
         this.email = email;
         this.password = password;
         this.userRole = userRole;
-        this.locked = locked;
-        this.enabled = enabled;
     }
 
     @Override
@@ -67,7 +61,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override
