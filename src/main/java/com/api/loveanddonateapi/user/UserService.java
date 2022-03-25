@@ -20,4 +20,8 @@ public class UserService implements UserDetailsService {
                 .orElseThrow( () ->
                         new UsernameNotFoundException( String.format( USER_NOT_FOUND, email ) ) );
     }
+
+    public String signUpUser(User user) {
+        return "";
+    }
 }
