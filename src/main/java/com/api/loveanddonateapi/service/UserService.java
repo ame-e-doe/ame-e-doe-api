@@ -1,7 +1,8 @@
-package com.api.loveanddonateapi.user;
+package com.api.loveanddonateapi.service;
 
-import com.api.loveanddonateapi.registration.token.ConfirmationToken;
-import com.api.loveanddonateapi.registration.token.ConfirmationTokenService;
+import com.api.loveanddonateapi.domain.ConfirmationToken;
+import com.api.loveanddonateapi.repository.UserRepository;
+import com.api.loveanddonateapi.domain.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

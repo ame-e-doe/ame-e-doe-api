@@ -1,5 +1,7 @@
-package com.api.loveanddonateapi.registration.token;
+package com.api.loveanddonateapi.service;
 
+import com.api.loveanddonateapi.domain.ConfirmationToken;
+import com.api.loveanddonateapi.repository.ConfirmationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

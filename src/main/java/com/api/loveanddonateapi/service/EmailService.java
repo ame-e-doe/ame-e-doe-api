@@ -1,5 +1,6 @@
-package com.api.loveanddonateapi.email;
+package com.api.loveanddonateapi.service;
 
+import com.api.loveanddonateapi.domain.email.EmailSender;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

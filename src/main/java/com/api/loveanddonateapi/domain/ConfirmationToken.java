@@ -1,6 +1,6 @@
-package com.api.loveanddonateapi.registration.token;
+package com.api.loveanddonateapi.domain;
 
-import com.api.loveanddonateapi.user.User;
+import com.api.loveanddonateapi.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

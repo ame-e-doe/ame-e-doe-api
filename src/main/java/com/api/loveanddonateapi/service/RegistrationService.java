@@ -1,11 +1,10 @@
-package com.api.loveanddonateapi.registration;
+package com.api.loveanddonateapi.service;
 
-import com.api.loveanddonateapi.email.EmailSender;
-import com.api.loveanddonateapi.registration.token.ConfirmationToken;
-import com.api.loveanddonateapi.registration.token.ConfirmationTokenService;
-import com.api.loveanddonateapi.user.User;
-import com.api.loveanddonateapi.user.UserRole;
-import com.api.loveanddonateapi.user.UserService;
+import com.api.loveanddonateapi.domain.email.EmailSender;
+import com.api.loveanddonateapi.domain.Registration;
+import com.api.loveanddonateapi.domain.ConfirmationToken;
+import com.api.loveanddonateapi.domain.User;
+import com.api.loveanddonateapi.domain.enums.UserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +16,13 @@ import java.time.LocalDateTime;
 public class RegistrationService {
 
     private final UserService userService;
-    private final EmailValidator emailValidator;
+    private final EmailValidatorService emailValidatorService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
 
-    public String register(RegistrationRequest registrationRequest) {
-        boolean isValidEmail = emailValidator
-                .test( registrationRequest.getEmail() );
+    public String register( Registration registration ) {
+        boolean isValidEmail = emailValidatorService
+                .test( registration.getEmail() );
 
         if( !isValidEmail ) {
             throw new IllegalStateException("email not valid");
@@ -31,14 +30,14 @@ public class RegistrationService {
 
         String token = userService.signUpUser(
                 new User(
-                        registrationRequest.getEmail(),
-                        registrationRequest.getPassword(),
+                        registration.getEmail(),
+                        registration.getPassword(),
                         UserRole.USER
                 )
         );
 
         String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
-        emailSender.send( registrationRequest.getEmail(), buildEmail( registrationRequest.getEmail(), link ) );
+        emailSender.send( registration.getEmail(), buildEmail( registration.getEmail(), link ) );
 
         return token;
     }

@@ -1,5 +1,6 @@
-package com.api.loveanddonateapi.user;
+package com.api.loveanddonateapi.domain;
 
+import com.api.loveanddonateapi.domain.enums.UserRole;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

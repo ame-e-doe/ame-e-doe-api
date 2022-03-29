@@ -1,4 +1,4 @@
-package com.api.loveanddonateapi.registration;
+package com.api.loveanddonateapi.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class RegistrationRequest {
+public class Registration {
     private final String email;
     private final String password;
 }

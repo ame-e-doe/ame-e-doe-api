@@ -1,6 +1,6 @@
-package com.api.loveanddonateapi.security.config;
+package com.api.loveanddonateapi.configuration;
 
-import com.api.loveanddonateapi.user.UserService;
+import com.api.loveanddonateapi.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
