@@ -1,7 +1,5 @@
-package com.api.loveanddonateapi.order;
+package com.api.loveanddonateapi.domain;
 
-import com.api.loveanddonateapi.digitalproduct.DigitalProduct;
-import com.api.loveanddonateapi.domain.User;
 import com.api.loveanddonateapi.enums.PaymentStatus;
 import lombok.*;
 

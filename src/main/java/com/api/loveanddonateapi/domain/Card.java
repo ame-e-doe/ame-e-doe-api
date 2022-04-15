@@ -1,4 +1,4 @@
-package com.api.loveanddonateapi.card;
+package com.api.loveanddonateapi.domain;
 
 import com.api.loveanddonateapi.domain.User;
 import lombok.*;

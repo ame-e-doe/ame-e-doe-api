@@ -1,4 +1,4 @@
-package com.api.loveanddonateapi.web;
+package com.api.loveanddonateapi.controller;
 
 import com.api.loveanddonateapi.domain.Registration;
 import com.api.loveanddonateapi.service.RegistrationService;
