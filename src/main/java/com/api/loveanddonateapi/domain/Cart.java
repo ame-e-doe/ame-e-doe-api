@@ -1,6 +1,5 @@
-package com.api.loveanddonateapi.cart;
+package com.api.loveanddonateapi.domain;
 
-import com.api.loveanddonateapi.digitalproduct.DigitalProduct;
 import lombok.*;
 import org.hibernate.Hibernate;
 
