@@ -3,12 +3,12 @@ package com.api.loveanddonateapi.service;
 import com.api.loveanddonateapi.domain.Card;
 import com.api.loveanddonateapi.domain.User;
 import com.api.loveanddonateapi.dto.CardDto;
+import com.api.loveanddonateapi.exception.EntityNotFoundException;
 import com.api.loveanddonateapi.repository.CardRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,14 +25,10 @@ public class CardService {
 
     public CardDto createCard( CardDto cardDto, Long userId ) {
         Card card = mapper.map( cardDto, Card.class );
-
-        Optional< User > user = this.userService.getUserById( userId );
-
-        if( user.isPresent() ) {
-            card.setUser( user.get() );
-            return mapper.map( cardRepository.save( card ), CardDto.class );
-        }
-        return null;
+        User user = this.userService.getUserById( userId )
+                .orElseThrow( () -> new EntityNotFoundException( "Usuario de id: " + userId + " não encontrado." ) );
+        card.setUser( user );
+        return mapper.map( cardRepository.save( card ), CardDto.class );
     }
 
     public List< CardDto > getAllCards( Long userId ) {
@@ -42,7 +38,8 @@ public class CardService {
                 .collect( Collectors.toList() );
     }
 
-    public void deleteCard( Long cardId ) {
-        cardRepository.deleteById( cardId );
+    public void deleteCardById( Long cardId ) {
+        cardRepository.delete( cardRepository.findById( cardId )
+                .orElseThrow( () -> new EntityNotFoundException( "Cartão de id: " + cardId + " não encontrado." ) ) );
     }
 }
