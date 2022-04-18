@@ -4,20 +4,15 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -25,10 +20,9 @@ import java.util.Set;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-@Table( name = "users", uniqueConstraints = {
-        @UniqueConstraint( columnNames = "email")
-    })
-public class User {
+@Table( name = "users" )
+public class User implements UserDetails, Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -38,16 +32,20 @@ public class User {
 
     @NotBlank
     @Email
+    @Column( name = "email", unique = true)
     private String email;
 
     @NotBlank
     private String password;
 
-    @ManyToMany( fetch = FetchType.LAZY )
+    private Boolean locked = false;
+    private Boolean enabled = false;
+
+    @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable( name = "user_roles",
                 joinColumns = @JoinColumn( name = "user_id" ),
                 inverseJoinColumns = @JoinColumn( name = "role_id" ) )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
     public User( String email,
                  String password ) {
@@ -56,11 +54,58 @@ public class User {
     }
 
     public Set< Role > getRoles() {
-        return roles;
+        return this.roles;
     }
 
     public void setRoles( Set< Role > roles ) {
         this.roles = roles;
     }
 
+    @Override
+    public Collection< ? extends GrantedAuthority > getAuthorities() {
+        return this.roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if( this == o ) return true;
+        if( !( o instanceof User ) ) return false;
+        User user = ( User ) o;
+        return Objects.equals( getId(), user.getId() ) && Objects.equals( getName(), user.getName() ) && Objects.equals( getEmail(), user.getEmail() ) && Objects.equals( getPassword(), user.getPassword() ) && Objects.equals( isAccountNonExpired(), user.isAccountNonExpired() ) && Objects.equals( isAccountNonLocked(), user.isAccountNonLocked() ) && Objects.equals( isCredentialsNonExpired(), user.isCredentialsNonExpired() ) && Objects.equals( isEnabled(), user.isEnabled() ) && Objects.equals( getRoles(), user.getRoles() );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( getId(), getName(), getEmail(), getPassword(), isAccountNonExpired(), isAccountNonLocked(), isCredentialsNonExpired(), isEnabled(), getRoles() );
+    }
 }

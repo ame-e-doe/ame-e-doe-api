@@ -1,6 +1,5 @@
 package com.api.loveanddonateapi.service;
 
-import com.api.loveanddonateapi.dto.UserDTO;
 import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -24,10 +23,10 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByEmail( email )
                 .orElseThrow( () -> new UsernameNotFoundException( "User not found with email: " + email ) );
 
-        return UserDTO.build(user);
+        return user;
     }
 
-    public int enableAppUser( String email ) {
+    public int enableUser( String email ) {
         return userRepository.enableUser( email );
     }
 
