@@ -1,9 +1,10 @@
 package com.api.loveanddonateapi.service;
 
-import com.api.loveanddonateapi.domain.Card;
-import com.api.loveanddonateapi.domain.User;
+import com.api.loveanddonateapi.models.Card;
+import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.dto.CardDTO;
 import com.api.loveanddonateapi.repository.CardRepository;
+import com.api.loveanddonateapi.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,15 @@ import java.util.stream.Collectors;
 public class CardService {
 
     private final CardRepository cardRepository;
-    private final UserService userService;
+
+    private final UserRepository userRepository;
+
     private final ModelMapper mapper = new ModelMapper();
 
     public CardDTO createCard( CardDTO cardDto, Long userId ) {
         Card card = mapper.map( cardDto, Card.class );
 
-        Optional< User > user = this.userService.getUserById( userId );
+        Optional< User > user = userRepository.findById( userId );
 
         if( user.isPresent() ) {
             card.setUser( user.get() );

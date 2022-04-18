@@ -1,6 +1,6 @@
-package com.api.loveanddonateapi.domain;
+package com.api.loveanddonateapi.models;
 
-import com.api.loveanddonateapi.domain.enums.ERole;
+import com.api.loveanddonateapi.models.enums.ERole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +16,7 @@ public class Role {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
-    private Long id;
+    private Integer id;
 
     @Enumerated( EnumType.STRING )
     @Column( length = 20 )
@@ -26,7 +26,7 @@ public class Role {
         this.name = name;
     }
 
-    public ERole getRole() {
+    public ERole getName() {
         return name;
     }
 
