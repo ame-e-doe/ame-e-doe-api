@@ -1,6 +1,6 @@
 package com.api.loveanddonateapi.configuration.security.jwt;
 
-import com.api.loveanddonateapi.domain.User;
+import com.api.loveanddonateapi.dto.UserDTO;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +22,9 @@ public class JwtUtils {
     private String jwtExpirationMs;
 
     public String generateJwtToken( Authentication authentication ) {
-        User user = ( User ) authentication.getPrincipal();
+        UserDTO userPrincipal = ( UserDTO ) authentication.getPrincipal();
         return Jwts.builder()
-                .setSubject( ( user.getEmail() ) )
+                .setSubject( ( userPrincipal.getEmail() ) )
                 .setIssuedAt( new Date() )
                 .setExpiration( new Date( ( new Date() ).getTime() + jwtExpirationMs ) )
                 .signWith( SignatureAlgorithm.HS256, jwtSecret )

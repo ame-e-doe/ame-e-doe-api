@@ -1,7 +1,7 @@
 package com.api.loveanddonateapi.controller;
 
-import com.api.loveanddonateapi.domain.SignInRequest;
-import com.api.loveanddonateapi.domain.SignUpRequest;
+import com.api.loveanddonateapi.models.SignInRequest;
+import com.api.loveanddonateapi.models.SignUpRequest;
 import com.api.loveanddonateapi.service.SignInService;
 import com.api.loveanddonateapi.service.SignUpService;
 import lombok.AllArgsConstructor;

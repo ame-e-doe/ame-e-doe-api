@@ -2,7 +2,6 @@ package com.api.loveanddonateapi.configuration;
 
 import com.api.loveanddonateapi.configuration.security.jwt.AuthEntryPointJwt;
 import com.api.loveanddonateapi.configuration.security.jwt.AuthTokenFilter;
-import com.api.loveanddonateapi.dto.UserDTO;
 import com.api.loveanddonateapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     UserService userDetailsService;
 
     @Autowired
-    private AuthEntryPointJwt authEntryPointJwt;
+    private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -55,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors()
                 .and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint( authEntryPointJwt )
+                .exceptionHandling().authenticationEntryPoint( unauthorizedHandler )
                 .and().sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
                 .and().authorizeRequests().antMatchers( "/api/auth/**" ).permitAll()
                 .antMatchers( "/api/**" ).permitAll()

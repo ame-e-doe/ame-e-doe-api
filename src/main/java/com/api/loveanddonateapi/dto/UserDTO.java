@@ -1,6 +1,6 @@
 package com.api.loveanddonateapi.dto;
 
-import com.api.loveanddonateapi.domain.User;
+import com.api.loveanddonateapi.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +15,7 @@ public class UserDTO implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+
     private String email;
 
     @JsonIgnore
@@ -38,13 +39,20 @@ public class UserDTO implements UserDetails {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities
-        );
+                authorities );
     }
 
     @Override
     public Collection< ? extends GrantedAuthority > getAuthorities() {
-        return null;
+        return authorities;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -64,7 +72,7 @@ public class UserDTO implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
@@ -74,7 +82,7 @@ public class UserDTO implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     @Override
@@ -83,7 +91,7 @@ public class UserDTO implements UserDetails {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        UserDTO user = (UserDTO ) o;
+        UserDTO user = ( UserDTO ) o;
         return Objects.equals(id, user.id);
     }
 }
