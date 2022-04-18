@@ -2,7 +2,7 @@ package com.api.loveanddonateapi.service;
 
 import com.api.loveanddonateapi.configuration.security.jwt.JwtUtils;
 import com.api.loveanddonateapi.models.SignInRequest;
-import com.api.loveanddonateapi.dto.UserDTO;
+import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.response.JwtResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +32,12 @@ public class SignInService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
-        UserDTO userDTO = ( UserDTO ) authentication.getPrincipal();
-        List<String> roles = userDTO.getAuthorities().stream()
+        User user = ( User ) authentication.getPrincipal();
+        List<String> roles = user.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect( Collectors.toList());
         return ResponseEntity.ok(new JwtResponse(jwt,
-                userDTO.getUsername(),
+                user.getUsername(),
                 roles));
     }
 

@@ -55,7 +55,7 @@ public class SignUpService {
         Set< Role > roles = new HashSet<>();
 
         if( strRoles == null ) {
-            Role userRole = roleRepository.findByName( ERole.ROLE_USER )
+            Role userRole = roleRepository.findByName( ERole.ROLE_USER.name() )
                     .orElseThrow( () -> new RuntimeException( "Error: Role is not found") );
             roles.add( userRole );
         }
@@ -97,7 +97,7 @@ public class SignUpService {
         }
 
         confirmationTokenService.setConfirmedAt( token );
-        userService.enableAppUser(
+        userService.enableUser(
                 confirmationToken.getUser().getEmail());
         return "confirmed";
     }
