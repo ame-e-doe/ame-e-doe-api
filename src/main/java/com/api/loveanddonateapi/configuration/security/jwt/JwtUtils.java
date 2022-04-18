@@ -18,15 +18,15 @@ public class JwtUtils {
     @Value( "${lovesecurity.app.jwtSecret}" )
     private String jwtSecret;
 
-    @Value( "$lovesecurity.app.jwtExpirationMs}" )
-    private String jwtExpirationMs;
+    @Value( "${lovesecurity.app.jwtExpirationMs}" )
+    private long jwtExpirationMs;
 
     public String generateJwtToken( Authentication authentication ) {
         UserDTO userPrincipal = ( UserDTO ) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject( ( userPrincipal.getEmail() ) )
                 .setIssuedAt( new Date() )
-                .setExpiration( new Date( ( new Date() ).getTime() + jwtExpirationMs ) )
+                .setExpiration( new Date(new Date().getTime() + jwtExpirationMs ) )
                 .signWith( SignatureAlgorithm.HS256, jwtSecret )
                 .compact();
     }
