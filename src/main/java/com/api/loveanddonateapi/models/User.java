@@ -1,4 +1,4 @@
-package com.api.loveanddonateapi.domain;
+package com.api.loveanddonateapi.models;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +17,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,8 +31,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY )
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
     private String name;
@@ -51,13 +49,18 @@ public class User {
                 inverseJoinColumns = @JoinColumn( name = "role_id" ) )
     private Set<Role> roles = new HashSet<>();
 
-    private Boolean locked = false;
-    private Boolean enabled = false;
-
     public User( String email,
                  String password ) {
         this.email = email;
         this.password = password;
+    }
+
+    public Set< Role > getRoles() {
+        return roles;
+    }
+
+    public void setRoles( Set< Role > roles ) {
+        this.roles = roles;
     }
 
 }

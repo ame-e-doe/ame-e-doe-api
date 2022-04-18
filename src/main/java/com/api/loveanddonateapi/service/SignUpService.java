@@ -1,11 +1,11 @@
 package com.api.loveanddonateapi.service;
 
-import com.api.loveanddonateapi.domain.Role;
-import com.api.loveanddonateapi.domain.email.EmailSender;
-import com.api.loveanddonateapi.domain.SignUpRequest;
-import com.api.loveanddonateapi.domain.ConfirmationToken;
-import com.api.loveanddonateapi.domain.User;
-import com.api.loveanddonateapi.domain.enums.ERole;
+import com.api.loveanddonateapi.models.ConfirmationToken;
+import com.api.loveanddonateapi.models.Role;
+import com.api.loveanddonateapi.models.SignUpRequest;
+import com.api.loveanddonateapi.models.User;
+import com.api.loveanddonateapi.models.email.EmailSender;
+import com.api.loveanddonateapi.models.enums.ERole;
 import com.api.loveanddonateapi.repository.RoleRepository;
 import com.api.loveanddonateapi.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -35,7 +35,9 @@ public class SignUpService {
     RoleRepository roleRepository;
 
     private final UserService userService;
+
     private final ConfirmationTokenService confirmationTokenService;
+
     private final EmailSender emailSender;
 
     public ResponseEntity< ? > signUp( SignUpRequest signUpRequest ) {
