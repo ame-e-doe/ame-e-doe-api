@@ -1,6 +1,6 @@
 package com.api.loveanddonateapi.domain;
 
-import com.api.loveanddonateapi.enums.PaymentStatus;
+import com.api.loveanddonateapi.domain.enums.PaymentStatus;
 import lombok.*;
 
 import javax.persistence.*;
