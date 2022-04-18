@@ -1,36 +1,43 @@
 package com.api.loveanddonateapi.models;
 
-import com.api.loveanddonateapi.models.enums.ERole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
 @Table( name = "roles" )
-public class Role {
+public class Role implements GrantedAuthority, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Integer id;
 
-    @Enumerated( EnumType.STRING )
-    @Column( length = 20 )
-    private ERole name;
+    @Column( name = "role_description", length = 20 )
+    private String name;
 
-    public Role( ERole name ) {
+    public Role( String name ) {
         this.name = name;
     }
 
-    public ERole getName() {
-        return name;
+    public String getName() {
+        return this.name;
     }
 
-    public void setName( ERole name ) {
+    public void setName( String name ) {
         this.name = name;
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.name;
     }
 }
