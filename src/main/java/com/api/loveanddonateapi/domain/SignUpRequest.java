@@ -1,15 +1,14 @@
 package com.api.loveanddonateapi.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Registration {
+public class SignUpRequest {
     private final String email;
     private final String password;
+    private final String role;
 }

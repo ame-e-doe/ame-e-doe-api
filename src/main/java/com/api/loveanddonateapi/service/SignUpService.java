@@ -1,45 +1,80 @@
 package com.api.loveanddonateapi.service;
 
+import com.api.loveanddonateapi.domain.Role;
 import com.api.loveanddonateapi.domain.email.EmailSender;
-import com.api.loveanddonateapi.domain.Registration;
+import com.api.loveanddonateapi.domain.SignUpRequest;
 import com.api.loveanddonateapi.domain.ConfirmationToken;
 import com.api.loveanddonateapi.domain.User;
-import com.api.loveanddonateapi.domain.enums.UserRole;
+import com.api.loveanddonateapi.domain.enums.ERole;
+import com.api.loveanddonateapi.repository.RoleRepository;
+import com.api.loveanddonateapi.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class RegistrationService {
+public class SignUpService {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     private final UserService userService;
-    private final EmailValidatorService emailValidatorService;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
 
-    public String register( Registration registration ) {
-        boolean isValidEmail = emailValidatorService
-                .test( registration.getEmail() );
+    public ResponseEntity< ? > signUp( SignUpRequest signUpRequest ) {
 
-        if( !isValidEmail ) {
-            throw new IllegalStateException("email not valid");
+        if( userRepository.existsByEmail( signUpRequest.getEmail() ) ) {
+            return ResponseEntity
+                    .badRequest()
+                    .body( new ResponseEntity( HttpStatus.BAD_REQUEST ) );
         }
 
-        String token = userService.signUpUser(
-                new User(
-                        registration.getEmail(),
-                        registration.getPassword(),
-                        UserRole.USER
-                )
+        User user = new User( signUpRequest.getEmail(),
+                              passwordEncoder.encode( signUpRequest.getPassword() )  );
+
+        String strRoles = ( signUpRequest.getRole() );
+        Set< Role > roles = new HashSet<>();
+
+        if( strRoles == null ) {
+            Role userRole = roleRepository.findByName( ERole.ROLE_USER )
+                    .orElseThrow( () -> new RuntimeException( "Error: Role is not found") );
+            roles.add( userRole );
+        }
+
+        user.setRoles( roles );
+        userRepository.save( user );
+
+        String token = UUID.randomUUID().toString();
+
+        ConfirmationToken confirmationToken = new ConfirmationToken(token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes( 15 ),
+                user
         );
 
-        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
-        emailSender.send( registration.getEmail(), buildEmail( registration.getEmail(), link ) );
+        confirmationTokenService.saveConfirmationToken( confirmationToken );
 
-        return token;
+        String link = "http://localhost:8080/api/auth/confirm?token=" + token;
+        emailSender.send( signUpRequest.getEmail(), buildEmail( signUpRequest.getEmail(), link ) );
+
+        return ResponseEntity.ok( new ResponseEntity( HttpStatus.CREATED ) );
     }
 
     @Transactional
