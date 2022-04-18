@@ -1,5 +1,6 @@
 package com.api.loveanddonateapi.domain.enums;
 
-public enum UserRole {
-    USER
+public enum ERole {
+    ROLE_USER,
+    ROLE_ADMIN
 }

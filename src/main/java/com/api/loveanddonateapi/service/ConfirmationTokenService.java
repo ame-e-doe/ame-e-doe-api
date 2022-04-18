@@ -27,5 +27,5 @@ public class ConfirmationTokenService {
                 token, LocalDateTime.now()
         );
     }
-
+    
 }
