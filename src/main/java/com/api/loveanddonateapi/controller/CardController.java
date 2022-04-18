@@ -1,6 +1,6 @@
 package com.api.loveanddonateapi.controller;
 
-import com.api.loveanddonateapi.dto.CardDto;
+import com.api.loveanddonateapi.dto.CardDTO;
 import com.api.loveanddonateapi.service.CardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +19,14 @@ public class CardController {
     }
 
     @PostMapping( "/{userId}" )
-    public ResponseEntity< CardDto > createCard(
-            @Valid @RequestBody CardDto cardDto,
+    public ResponseEntity< CardDTO > createCard(
+            @Valid @RequestBody CardDTO cardDto,
             @PathVariable Long userId ) {
         return ResponseEntity.ok( this.cardService.createCard( cardDto, userId ) );
     }
 
     @GetMapping( "/list/{userId}" )
-    public ResponseEntity< List< CardDto > > getAllCards( @PathVariable Long userId ) {
+    public ResponseEntity< List< CardDTO > > getAllCards( @PathVariable Long userId ) {
         return ResponseEntity.ok( this.cardService.getAllCards( userId ) );
     }
 
