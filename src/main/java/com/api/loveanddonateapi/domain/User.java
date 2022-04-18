@@ -1,23 +1,16 @@
 package com.api.loveanddonateapi.domain;
 
 import com.api.loveanddonateapi.domain.enums.UserRole;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -44,6 +37,13 @@ public class User implements UserDetails {
     private UserRole userRole;
     private Boolean locked = false;
     private Boolean enabled = false;
+
+    @ManyToMany
+    @JoinTable( name = "USER_PRODUCTS",
+            joinColumns = @JoinColumn( name = "ID_USER" ),
+            inverseJoinColumns = @JoinColumn( name = "ID_PRODUCT" ) )
+    @ToString.Exclude
+    private Set< DigitalProduct > products = new HashSet<>();
 
     public User( String email,
                  String password,
