@@ -1,6 +1,5 @@
 package com.api.loveanddonateapi.domain;
 
-import com.api.loveanddonateapi.domain.User;
 import lombok.*;
 
 import javax.persistence.*;
