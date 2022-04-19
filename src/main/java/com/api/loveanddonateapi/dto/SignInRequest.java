@@ -1,14 +1,12 @@
-package com.api.loveanddonateapi.models;
+package com.api.loveanddonateapi.dto;
 
 import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@EqualsAndHashCode
 @ToString
-public class SignUpRequest {
+public class SignInRequest {
     private final String email;
     private final String password;
-    private final String role;
 }

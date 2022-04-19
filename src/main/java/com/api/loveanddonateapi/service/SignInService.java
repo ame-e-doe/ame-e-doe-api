@@ -1,7 +1,7 @@
 package com.api.loveanddonateapi.service;
 
 import com.api.loveanddonateapi.configuration.security.jwt.JwtUtils;
-import com.api.loveanddonateapi.models.SignInRequest;
+import com.api.loveanddonateapi.dto.SignInRequest;
 import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.response.JwtResponse;
 import lombok.AllArgsConstructor;

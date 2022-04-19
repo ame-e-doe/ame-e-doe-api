@@ -2,13 +2,12 @@ package com.api.loveanddonateapi.service;
 
 import com.api.loveanddonateapi.models.ConfirmationToken;
 import com.api.loveanddonateapi.models.Role;
-import com.api.loveanddonateapi.models.SignUpRequest;
+import com.api.loveanddonateapi.dto.signup.SignUpDTO;
 import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.models.email.EmailSender;
 import com.api.loveanddonateapi.models.enums.ERole;
 import com.api.loveanddonateapi.repository.RoleRepository;
 import com.api.loveanddonateapi.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 public class SignUpService {
 
     @Autowired
@@ -34,24 +32,27 @@ public class SignUpService {
     @Autowired
     RoleRepository roleRepository;
 
-    private final UserService userService;
+    @Autowired
+    UserService userService;
 
-    private final ConfirmationTokenService confirmationTokenService;
+    @Autowired
+    ConfirmationTokenService confirmationTokenService;
 
-    private final EmailSender emailSender;
+    @Autowired
+    EmailSender emailSender;
 
-    public ResponseEntity< ? > signUp( SignUpRequest signUpRequest ) {
+    public ResponseEntity< ? > signUp( SignUpDTO signUpDTO ) {
 
-        if( userRepository.existsByEmail( signUpRequest.getEmail() ) ) {
+        if( userRepository.existsByEmail( signUpDTO.getEmail() ) ) {
             return ResponseEntity
                     .badRequest()
                     .body( new ResponseEntity( HttpStatus.BAD_REQUEST ) );
         }
 
-        User user = new User( signUpRequest.getEmail(),
-                              passwordEncoder.encode( signUpRequest.getPassword() )  );
+        User user = new User( signUpDTO.getEmail(),
+                              passwordEncoder.encode( signUpDTO.getPassword() )  );
 
-        String strRoles = ( signUpRequest.getRole() );
+        String strRoles = ( signUpDTO.getRole() );
         Set< Role > roles = new HashSet<>();
 
         if( strRoles == null ) {
@@ -74,7 +75,7 @@ public class SignUpService {
         confirmationTokenService.saveConfirmationToken( confirmationToken );
 
         String link = "http://localhost:8080/api/auth/confirm?token=" + token;
-        emailSender.send( signUpRequest.getEmail(), buildEmail( signUpRequest.getEmail(), link ) );
+        emailSender.send( signUpDTO.getEmail(), buildEmail( signUpDTO.getEmail(), link ) );
 
         return ResponseEntity.ok( new ResponseEntity( HttpStatus.CREATED ) );
     }
