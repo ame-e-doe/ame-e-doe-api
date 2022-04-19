@@ -2,6 +2,7 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+    include-stacktrace: never
 
 spring:
   datasource:
@@ -34,3 +35,8 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+
+lovesecurity:
+  app:
+    jwtSecret: l0v34ndD0n4t3
+    jwtExpirationMs: 86400000

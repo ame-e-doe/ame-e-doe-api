@@ -1,7 +1,10 @@
 package com.api.loveanddonateapi.exception;
 
+import lombok.AllArgsConstructor;
+
 import java.time.Instant;
 
+@AllArgsConstructor
 public class StanderError {
 
     private Instant timestamp;
@@ -11,6 +14,7 @@ public class StanderError {
     private String path;
 
     public StanderError() {
+
     }
 
     public Instant getTimestamp() {

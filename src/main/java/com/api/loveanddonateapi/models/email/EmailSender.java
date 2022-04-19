@@ -1,4 +1,4 @@
-package com.api.loveanddonateapi.domain.email;
+package com.api.loveanddonateapi.models.email;
 
 public interface EmailSender {
     void send( String to, String email);

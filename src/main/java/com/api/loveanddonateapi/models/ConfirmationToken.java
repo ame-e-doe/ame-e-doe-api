@@ -1,6 +1,5 @@
-package com.api.loveanddonateapi.domain;
+package com.api.loveanddonateapi.models;
 
-import com.api.loveanddonateapi.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
