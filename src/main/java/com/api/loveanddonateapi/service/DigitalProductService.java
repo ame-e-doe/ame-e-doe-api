@@ -9,6 +9,7 @@ import com.api.loveanddonateapi.repository.CategoryRepository;
 import com.api.loveanddonateapi.repository.DigitalProductRepository;
 import com.api.loveanddonateapi.repository.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,17 +18,14 @@ import java.util.stream.Collectors;
 @Service
 public class DigitalProductService {
 
-    private final DigitalProductRepository dpRepository;
-    private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
+    @Autowired
+    private DigitalProductRepository dpRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     private ModelMapper mapper = new ModelMapper();
-
-    public DigitalProductService( DigitalProductRepository dpRepository, CategoryRepository categoryRepository, UserRepository userRepository ) {
-        this.dpRepository = dpRepository;
-        this.categoryRepository = categoryRepository;
-        this.userRepository = userRepository;
-    }
 
     public List< DigitalProductDto > getAllProducts() {
         return this.dpRepository.findAll()

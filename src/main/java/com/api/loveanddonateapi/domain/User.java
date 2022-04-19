@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private Boolean locked = false;
     private Boolean enabled = false;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( name = "USER_PRODUCTS",
             joinColumns = @JoinColumn( name = "ID_USER" ),
             inverseJoinColumns = @JoinColumn( name = "ID_PRODUCT" ) )
