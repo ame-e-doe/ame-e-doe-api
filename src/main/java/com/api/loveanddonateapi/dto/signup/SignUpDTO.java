@@ -6,13 +6,14 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
-@Data
-@Builder
 @JsonInclude( JsonInclude.Include.NON_NULL )
 @AllArgsConstructor
-@NoArgsConstructor
-public class SignUpDTO {
+@Getter
+public class SignUpDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Email( message = "{email.invalid}")
     @NotBlank( message = "{required.field}")

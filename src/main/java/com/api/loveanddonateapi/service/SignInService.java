@@ -1,9 +1,9 @@
 package com.api.loveanddonateapi.service;
 
-import com.api.loveanddonateapi.configuration.security.jwt.JwtUtils;
-import com.api.loveanddonateapi.dto.SignInRequest;
+import com.api.loveanddonateapi.security.jwt.JwtUtils;
+import com.api.loveanddonateapi.dto.SignInDTO;
 import com.api.loveanddonateapi.models.User;
-import com.api.loveanddonateapi.response.JwtResponse;
+import com.api.loveanddonateapi.security.response.JwtResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +26,9 @@ public class SignInService {
     @Autowired
     JwtUtils jwtUtils;
 
-    public ResponseEntity< ? > auth( SignInRequest signInRequest ) {
+    public ResponseEntity< ? > auth( SignInDTO signInDTO ) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(signInRequest.getEmail(), signInRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken( signInDTO.getEmail(), signInDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 

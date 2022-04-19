@@ -1,23 +1,26 @@
 package com.api.loveanddonateapi.service;
 
+import com.api.loveanddonateapi.dto.response.MessageResponse;
+import com.api.loveanddonateapi.dto.signup.SignUpDTO;
+import com.api.loveanddonateapi.exception.SignUpException;
 import com.api.loveanddonateapi.models.ConfirmationToken;
 import com.api.loveanddonateapi.models.Role;
-import com.api.loveanddonateapi.dto.signup.SignUpDTO;
 import com.api.loveanddonateapi.models.User;
+import com.api.loveanddonateapi.models.email.Email;
 import com.api.loveanddonateapi.models.email.EmailSender;
 import com.api.loveanddonateapi.models.enums.ERole;
 import com.api.loveanddonateapi.repository.RoleRepository;
 import com.api.loveanddonateapi.repository.UserRepository;
+import com.api.loveanddonateapi.utils.EmailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -41,66 +44,65 @@ public class SignUpService {
     @Autowired
     EmailSender emailSender;
 
-    public ResponseEntity< ? > signUp( SignUpDTO signUpDTO ) {
-
-        if( userRepository.existsByEmail( signUpDTO.getEmail() ) ) {
-            return ResponseEntity
-                    .badRequest()
-                    .body( new ResponseEntity( HttpStatus.BAD_REQUEST ) );
-        }
+    public Email signUp( SignUpDTO signUpDTO ) {
 
         User user = new User( signUpDTO.getEmail(),
-                              passwordEncoder.encode( signUpDTO.getPassword() )  );
+                passwordEncoder.encode( signUpDTO.getPassword() ) );
 
         String strRoles = ( signUpDTO.getRole() );
-        Set< Role > roles = new HashSet<>();
+        List< Role > roles = new ArrayList<>();
 
         if( strRoles == null ) {
             Role userRole = roleRepository.findByName( ERole.ROLE_USER.name() )
-                    .orElseThrow( () -> new RuntimeException( "Error: Role is not found") );
+                    .orElseThrow( () -> new SignUpException( "Error: Role is not found" ) );
             roles.add( userRole );
         }
 
         user.setRoles( roles );
         userRepository.save( user );
-
         String token = UUID.randomUUID().toString();
 
-        ConfirmationToken confirmationToken = new ConfirmationToken(token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes( 15 ),
-                user
-        );
+        confirmationTokenService.saveConfirmationToken( generateConfirmationToken( user, token ) );
 
-        confirmationTokenService.saveConfirmationToken( confirmationToken );
-
-        String link = "http://localhost:8080/api/auth/confirm?token=" + token;
+        String link = "http://localhost:8080/auth/confirm?token=" + token;
         emailSender.send( signUpDTO.getEmail(), buildEmail( signUpDTO.getEmail(), link ) );
 
-        return ResponseEntity.ok( new ResponseEntity( HttpStatus.CREATED ) );
+        return Email.builder()
+                .email( EmailUtils.formatterEmail( signUpDTO.getEmail() ) )
+                .build();
+    }
+
+    private ConfirmationToken generateConfirmationToken( User user, String token ) {
+        ConfirmationToken confirmationToken = new ConfirmationToken( token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes( 15 ),
+                user );
+        return confirmationToken;
     }
 
     @Transactional
-    public String confirmToken( String token ) {
+    public ResponseEntity confirmToken( String token ) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken( token )
                 .orElseThrow( () ->
-                        new IllegalStateException( "token not found" ) );
+                        new SignUpException( "token not found" ) );
 
         if( confirmationToken.getConfirmedAt() != null ) {
-            throw new IllegalStateException( "email already confirmed" );
+            throw new SignUpException( "email already confirmed" );
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if( expiredAt.isBefore( LocalDateTime.now() ) ) {
-            throw new IllegalStateException( "token expired" );
+            throw new SignUpException( "token expired" );
         }
 
         confirmationTokenService.setConfirmedAt( token );
         userService.enableUser(
                 confirmationToken.getUser().getEmail());
-        return "confirmed";
+        return ResponseEntity
+                .ok()
+                .body( new MessageResponse("User enabled") );
     }
 
     private String buildEmail( String name, String link ) {
