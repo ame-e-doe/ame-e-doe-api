@@ -28,8 +28,8 @@ public class Cart {
 
     @ManyToMany
     @JoinTable( name = "CART_PRODUCTS",
-            joinColumns = @JoinColumn( name = "ID_PRODUCT" ),
-            inverseJoinColumns = @JoinColumn( name = "ID_CART" ) )
+            joinColumns = @JoinColumn( name = "ID_CART" ),
+            inverseJoinColumns = @JoinColumn( name = "ID_PRODUCT" ) )
     @ToString.Exclude
     private Set< DigitalProduct > products = new HashSet<>();
 
