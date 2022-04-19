@@ -30,8 +30,8 @@ public class CardController {
 
     @DeleteMapping( "delete/{cardId}" )
     public ResponseEntity< Void > deleteCard( @PathVariable Long cardId ) {
-        this.cardService.deleteCard( cardId );
-        return ResponseEntity.noContent().build();
+        this.cardService.deleteCardById( cardId );
+        return ResponseEntity.ok().build();
     }
 
 }

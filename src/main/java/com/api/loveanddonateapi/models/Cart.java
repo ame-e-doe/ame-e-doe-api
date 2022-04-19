@@ -15,30 +15,30 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name = "CART")
+@Table( name = "CART" )
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CART", nullable = false)
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "ID_CART", nullable = false )
     private Long id;
 
-    @Column(name = "DATE_CART")
+    @Column( name = "DATE_CART" )
     private LocalDateTime date = LocalDateTime.now();
 
     @ManyToMany
-    @JoinTable(name="CART_PRODUCTS",
-            joinColumns = @JoinColumn (name = "ID_PRODUCT"),
-            inverseJoinColumns = @JoinColumn (name = "ID_CART"))
+    @JoinTable( name = "CART_PRODUCTS",
+            joinColumns = @JoinColumn( name = "ID_PRODUCT" ),
+            inverseJoinColumns = @JoinColumn( name = "ID_CART" ) )
     @ToString.Exclude
-    private Set<DigitalProduct> products = new HashSet<>();
+    private Set< DigitalProduct > products = new HashSet<>();
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Cart cart = (Cart) o;
-        return id != null && Objects.equals(id, cart.id);
+    public boolean equals( Object o ) {
+        if( this == o ) return true;
+        if( o == null || Hibernate.getClass( this ) != Hibernate.getClass( o ) ) return false;
+        Cart cart = ( Cart ) o;
+        return id != null && Objects.equals( id, cart.id );
     }
 
     @Override

@@ -11,27 +11,27 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name = "CARD")
+@Table( name = "CARD" )
 public class Card {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CARD", nullable = false)
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "ID_CARD", nullable = false )
     private Long id;
 
-    @Column(name = "CARD_NUMBER")
+    @Column( name = "CARD_NUMBER" )
     private String cardNumber;
 
-    @Column(name = "SECURITY_CODE_CARD")
+    @Column( name = "SECURITY_CODE_CARD" )
     private Integer securityCode;
 
-    @Column(name = "PRINTED_NAME_CARD")
+    @Column( name = "PRINTED_NAME_CARD" )
     private String printedName;
 
-    @Column(name = "EXPERATION_DATE_CARD")
+    @Column( name = "EXPERATION_DATE_CARD" )
     private LocalDate expirationDate;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn( name = "USER_ID" )
     private User user;
 
 }

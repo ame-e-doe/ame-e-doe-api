@@ -3,10 +3,11 @@ package com.api.loveanddonateapi.service;
 import com.api.loveanddonateapi.models.Card;
 import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.dto.CardDTO;
+import com.api.loveanddonateapi.exception.EntityNotFoundException;
 import com.api.loveanddonateapi.repository.CardRepository;
 import com.api.loveanddonateapi.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +15,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class CardService {
 
-    private final CardRepository cardRepository;
+    @Autowired
+    CardRepository cardRepository;
 
-    private final UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     private final ModelMapper mapper = new ModelMapper();
 
@@ -42,7 +44,8 @@ public class CardService {
                 .collect( Collectors.toList() );
     }
 
-    public void deleteCard( Long cardId ) {
-        cardRepository.deleteById( cardId );
+    public void deleteCardById( Long cardId ) {
+        cardRepository.delete( cardRepository.findById( cardId )
+                .orElseThrow( () -> new EntityNotFoundException( "Cartão de id: " + cardId + " não encontrado." ) ) );
     }
 }

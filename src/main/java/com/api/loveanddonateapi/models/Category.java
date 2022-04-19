@@ -12,22 +12,22 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name = "CATEGORY")
+@Table( name = "CATEGORY" )
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CAT", nullable = false)
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @Column( name = "ID_CAT", nullable = false )
     private Long id;
 
-    @Column(name = "DESCRICAO_CAT")
+    @Column( name = "DESCRICAO_CAT" )
     private String description;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Category category = (Category) o;
-        return id != null && Objects.equals(id, category.id);
+    public boolean equals( Object o ) {
+        if( this == o ) return true;
+        if( o == null || Hibernate.getClass( this ) != Hibernate.getClass( o ) ) return false;
+        Category category = ( Category ) o;
+        return id != null && Objects.equals( id, category.id );
     }
 
     @Override
