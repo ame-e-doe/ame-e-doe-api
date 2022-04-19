@@ -1,4 +1,4 @@
-package com.api.loveanddonateapi.response;
+package com.api.loveanddonateapi.security.response;
 
 import lombok.Getter;
 import lombok.Setter;
