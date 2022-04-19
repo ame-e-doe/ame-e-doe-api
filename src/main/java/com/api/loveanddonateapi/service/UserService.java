@@ -1,6 +1,5 @@
 package com.api.loveanddonateapi.service;
 
-import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +19,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername( String email ) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail( email )
+        var user = userRepository.findByEmail( email )
                 .orElseThrow( () -> new UsernameNotFoundException( "User not found with email: " + email ) );
 
         return user;

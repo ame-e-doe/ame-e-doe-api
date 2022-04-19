@@ -1,6 +1,5 @@
 package com.api.loveanddonateapi.models;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +11,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Entity
 @Table( name = "users" )
@@ -32,7 +30,7 @@ public class User implements UserDetails, Serializable {
 
     @NotBlank
     @Email
-    @Column( name = "email", unique = true)
+    @Column( name = "email" )
     private String email;
 
     @NotBlank
@@ -43,9 +41,9 @@ public class User implements UserDetails, Serializable {
 
     @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable( name = "user_roles",
-                joinColumns = @JoinColumn( name = "user_id" ),
-                inverseJoinColumns = @JoinColumn( name = "role_id" ) )
-    private Set<Role> roles;
+                joinColumns = @JoinColumn( name = "id_user" ),
+                inverseJoinColumns = @JoinColumn( name = "id_role" ) )
+    private List<Role> roles;
 
     public User( String email,
                  String password ) {
@@ -53,11 +51,11 @@ public class User implements UserDetails, Serializable {
         this.password = password;
     }
 
-    public Set< Role > getRoles() {
+    public List< Role > getRoles() {
         return this.roles;
     }
 
-    public void setRoles( Set< Role > roles ) {
+    public void setRoles( List<Role> roles ) {
         this.roles = roles;
     }
 
@@ -101,11 +99,27 @@ public class User implements UserDetails, Serializable {
         if( this == o ) return true;
         if( !( o instanceof User ) ) return false;
         User user = ( User ) o;
-        return Objects.equals( getId(), user.getId() ) && Objects.equals( getName(), user.getName() ) && Objects.equals( getEmail(), user.getEmail() ) && Objects.equals( getPassword(), user.getPassword() ) && Objects.equals( isAccountNonExpired(), user.isAccountNonExpired() ) && Objects.equals( isAccountNonLocked(), user.isAccountNonLocked() ) && Objects.equals( isCredentialsNonExpired(), user.isCredentialsNonExpired() ) && Objects.equals( isEnabled(), user.isEnabled() ) && Objects.equals( getRoles(), user.getRoles() );
+        return Objects.equals( getId(), user.getId() )
+                && Objects.equals( getName(), user.getName() )
+                && Objects.equals( getEmail(), user.getEmail() )
+                && Objects.equals( getPassword(), user.getPassword() )
+                && Objects.equals( isAccountNonExpired(), user.isAccountNonExpired() )
+                && Objects.equals( isAccountNonLocked(), user.isAccountNonLocked() )
+                && Objects.equals( isCredentialsNonExpired(), user.isCredentialsNonExpired() )
+                && Objects.equals( isEnabled(), user.isEnabled() )
+                && Objects.equals( getRoles(), user.getRoles() );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( getId(), getName(), getEmail(), getPassword(), isAccountNonExpired(), isAccountNonLocked(), isCredentialsNonExpired(), isEnabled(), getRoles() );
+        return Objects.hash( getId(),
+                getName(),
+                getEmail(),
+                getPassword(),
+                isAccountNonExpired(),
+                isAccountNonLocked(),
+                isCredentialsNonExpired(),
+                isEnabled(),
+                getRoles() );
     }
 }
