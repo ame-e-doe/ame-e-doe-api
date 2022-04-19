@@ -1,18 +1,17 @@
 package com.api.loveanddonateapi.dto.signup;
 
+import com.api.loveanddonateapi.models.email.Email;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude( JsonInclude.Include.NON_NULL )
+@Setter
 public class SignUpDTOResponse {
 
-    private String email;
+    private Email email;
 
 }
