@@ -1,6 +1,6 @@
 package com.api.loveanddonateapi.dto;
 
-import com.api.loveanddonateapi.domain.Category;
+import com.api.loveanddonateapi.models.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

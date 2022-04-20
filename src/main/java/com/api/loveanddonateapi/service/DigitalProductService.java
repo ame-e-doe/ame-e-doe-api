@@ -1,10 +1,10 @@
 package com.api.loveanddonateapi.service;
 
-import com.api.loveanddonateapi.domain.Category;
-import com.api.loveanddonateapi.domain.User;
 import com.api.loveanddonateapi.dto.DigitalProductDto;
 import com.api.loveanddonateapi.dto.DigitalProductsByUser;
 import com.api.loveanddonateapi.exception.EntityNotFoundException;
+import com.api.loveanddonateapi.models.Category;
+import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.repository.CategoryRepository;
 import com.api.loveanddonateapi.repository.DigitalProductRepository;
 import com.api.loveanddonateapi.repository.UserRepository;
@@ -19,31 +19,33 @@ import java.util.stream.Collectors;
 public class DigitalProductService {
 
     @Autowired
-    private DigitalProductRepository dpRepository;
+    private DigitalProductRepository digitalProductRepository;
+
     @Autowired
     private CategoryRepository categoryRepository;
+
     @Autowired
     private UserRepository userRepository;
 
     private ModelMapper mapper = new ModelMapper();
 
     public List< DigitalProductDto > getAllProducts() {
-        return this.dpRepository.findAll()
+        return this.digitalProductRepository.findAll()
                 .stream()
                 .map( products -> mapper.map( products, DigitalProductDto.class ) )
                 .collect( Collectors.toList() );
     }
 
     public DigitalProductDto getProductById( Long idProduct ) {
-        return this.dpRepository.findById( idProduct )
+        return this.digitalProductRepository.findById( idProduct )
                 .map( product -> mapper.map( product, DigitalProductDto.class ) )
                 .orElseThrow( () -> new EntityNotFoundException( "Produto de id: " + idProduct + " não encontrado." ) );
     }
 
     public List< DigitalProductDto > getAllProductsByCategory( Long idCategory ) {
-        Category category = this.categoryRepository.findById( idCategory )
+        Category category = categoryRepository.findById( idCategory )
                 .orElseThrow( () -> new EntityNotFoundException( "Categoria de id: " + idCategory + " não encontrado." ) );
-        return this.dpRepository.getDigitalProductsByCategory( category )
+        return this.digitalProductRepository.getDigitalProductsByCategory( category )
                 .stream()
                 .map( product -> mapper.map( product, DigitalProductDto.class ) )
                 .collect( Collectors.toList() );
@@ -56,7 +58,7 @@ public class DigitalProductService {
     }
 
     public List< DigitalProductDto > getAllProductsBySearch( String search ) {
-        return this.dpRepository
+        return this.digitalProductRepository
                 .findDigitalProductsByTitleOrDescription( search )
                 .stream()
                 .map( product -> mapper.map( product, DigitalProductDto.class ) )

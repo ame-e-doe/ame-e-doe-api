@@ -1,6 +1,6 @@
 package com.api.loveanddonateapi.repository;
 
-import com.api.loveanddonateapi.domain.Category;
+import com.api.loveanddonateapi.models.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
