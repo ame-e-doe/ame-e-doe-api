@@ -37,6 +37,7 @@ public class SignInService {
                 .map(item -> item.getAuthority())
                 .collect( Collectors.toList());
         return ResponseEntity.ok(new JwtResponse(jwt,
+                user.getId(),
                 user.getUsername(),
                 roles));
     }
