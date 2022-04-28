@@ -22,5 +22,6 @@ public class SignUpDTO implements Serializable {
     @NotBlank( message = "{required.field}")
     @Length( min = 8, max = 20, message = "{invalid.field}")
     private String password;
+
     private String role;
 }
