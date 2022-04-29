@@ -5,17 +5,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Table( name = "roles" )
-public class Role implements GrantedAuthority, Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Table( name = "ROLES" )
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )

@@ -1,9 +1,21 @@
 package com.api.loveanddonateapi.models;
 
 import com.api.loveanddonateapi.models.enums.PaymentStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +27,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 public class Sale {
+
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @Column( name = "ID_SALE", nullable = false )

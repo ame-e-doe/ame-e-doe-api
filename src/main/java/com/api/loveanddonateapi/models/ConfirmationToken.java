@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,16 +19,8 @@ import java.time.LocalDateTime;
 @Entity
 public class ConfirmationToken {
 
-    @SequenceGenerator(
-            name = "confirmation_token_sequence",
-            sequenceName = "confirmation_token_sequence",
-            allocationSize = 1
-    )
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "confirmation_token_sequence"
-    )
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
     @Column(nullable = false)
@@ -46,7 +37,7 @@ public class ConfirmationToken {
     @ManyToOne
     @JoinColumn(
             nullable = false,
-            name = "user_id"
+            name = "id_user"
     )
     private User user;
 
