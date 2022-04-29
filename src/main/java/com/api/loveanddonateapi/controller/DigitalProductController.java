@@ -1,11 +1,15 @@
 package com.api.loveanddonateapi.controller;
 
-import com.api.loveanddonateapi.dto.DigitalProductDto;
-import com.api.loveanddonateapi.dto.DigitalProductsByUser;
+import com.api.loveanddonateapi.dto.DigitalProductDTO;
+import com.api.loveanddonateapi.dto.DigitalProductsByUserDTO;
 import com.api.loveanddonateapi.service.DigitalProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -17,27 +21,27 @@ public class DigitalProductController {
     private DigitalProductService digitalProductService;
 
     @GetMapping( "/list" )
-    public ResponseEntity< List< DigitalProductDto > > getAllProducts() {
+    public ResponseEntity< List< DigitalProductDTO > > getAllProducts() {
         return ResponseEntity.ok( digitalProductService.getAllProducts() );
     }
 
     @GetMapping( "/{idProduct}" )
-    public ResponseEntity< DigitalProductDto > getProductById( @PathVariable Long idProduct ) {
+    public ResponseEntity< DigitalProductDTO > getProductById( @PathVariable Long idProduct ) {
         return ResponseEntity.ok( digitalProductService.getProductById( idProduct ) );
     }
 
     @GetMapping( "/list/category/{idCategory}" )
-    public ResponseEntity< List< DigitalProductDto > > getAllProductsByCategory( @PathVariable Long idCategory ) {
+    public ResponseEntity< List< DigitalProductDTO > > getAllProductsByCategory( @PathVariable Long idCategory ) {
         return ResponseEntity.ok( digitalProductService.getAllProductsByCategory( idCategory ) );
     }
 
     @GetMapping( "list/user/{idUser}" )
-    public ResponseEntity< DigitalProductsByUser > getAllProductsByUser( @PathVariable Long idUser ) {
+    public ResponseEntity< DigitalProductsByUserDTO > getAllProductsByUser( @PathVariable Long idUser ) {
         return ResponseEntity.ok( digitalProductService.getAllProductsByUser( idUser ) );
     }
 
     @GetMapping( "/list/search" )
-    public ResponseEntity< List< DigitalProductDto > > getAllProductsBySearch( @RequestParam String text ) {
+    public ResponseEntity< List< DigitalProductDTO > > getAllProductsBySearch( @RequestParam String text ) {
         return ResponseEntity.ok( digitalProductService.getAllProductsBySearch( text ) );
     }
 

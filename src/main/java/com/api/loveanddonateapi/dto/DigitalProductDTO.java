@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DigitalProductDto {
+public class DigitalProductDTO {
 
     private Long id;
 

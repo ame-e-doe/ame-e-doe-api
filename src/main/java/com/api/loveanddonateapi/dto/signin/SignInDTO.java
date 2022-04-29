@@ -1,19 +1,18 @@
-package com.api.loveanddonateapi.dto;
+package com.api.loveanddonateapi.dto.signin;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
 @AllArgsConstructor
 @ToString
 @Getter
 @JsonInclude( JsonInclude.Include.NON_NULL )
-public class SignInDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class SignInDTO {
 
     @NotBlank
     @Email
