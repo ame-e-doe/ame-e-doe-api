@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository< User, Long> {
 
     Optional< User > findByEmail( String email );
+
+
     Boolean existsByEmail( String email );
 
     @Transactional
@@ -21,6 +23,8 @@ public interface UserRepository extends JpaRepository< User, Long> {
             "SET a.enabled = TRUE WHERE a.email = ?1" )
     int enableUser( String email );
 
-    Optional< User > findById( Long id );
+    @Transactional
+    @Query( "SELECT e.enabled FROM User e WHERE e.email = ?1" )
+    Boolean isEnabled( String email );
 
 }

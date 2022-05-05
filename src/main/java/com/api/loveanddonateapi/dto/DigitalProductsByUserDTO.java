@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DigitalProductsByUser {
+public class DigitalProductsByUserDTO {
 
     private Long id;
     private String name;

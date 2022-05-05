@@ -1,7 +1,6 @@
 package com.api.loveanddonateapi.service;
 
 import com.api.loveanddonateapi.models.email.EmailSender;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
