@@ -16,7 +16,7 @@ public class CardController {
     @Autowired
     CardService cardService;
 
-    @PostMapping( "/{userId}" )
+    @PostMapping( "/create/{userId}" )
     public ResponseEntity< CardDTO > createCard(
             @Valid @RequestBody CardDTO cardDto,
             @PathVariable Long userId ) {

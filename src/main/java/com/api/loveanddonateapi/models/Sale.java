@@ -25,8 +25,8 @@ public class Sale {
 
     @ManyToMany
     @JoinTable( name = "SALE_PRODUCTS",
-            joinColumns = @JoinColumn( name = "ID_PRODUCT" ),
-            inverseJoinColumns = @JoinColumn( name = "ID_SALE" ) )
+            joinColumns = @JoinColumn( name = "ID_SALE" ),
+            inverseJoinColumns = @JoinColumn( name = "ID_PRODUCT" ) )
     @ToString.Exclude
     private Set< DigitalProduct > products = new HashSet<>();
 
@@ -39,11 +39,5 @@ public class Sale {
 
     @Column( name = "STATUS_PAYMENT" )
     private PaymentStatus status;
-
-    public void calculateValue() {
-        for( DigitalProduct dp : this.products ) {
-            value += dp.getValue();
-        }
-    }
 
 }

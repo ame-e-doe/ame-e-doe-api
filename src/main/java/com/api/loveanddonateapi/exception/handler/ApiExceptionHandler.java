@@ -39,7 +39,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         "Expired or invalid token",
                         ex.getMessage(),
                         request.getRequestURI() );
-        return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(standerError);
+        return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body( standerError );
     }
 
     @ExceptionHandler( Exception.class )
@@ -58,7 +58,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity< StanderError > handleSignUpException( Exception ex, HttpServletRequest request ) {
         StanderError standerError =
                 new StanderError(
-                       Instant.now(),
+                        Instant.now(),
                         HttpStatus.BAD_REQUEST.value(),
                         "SignUp Error",
                         ex.getMessage(),

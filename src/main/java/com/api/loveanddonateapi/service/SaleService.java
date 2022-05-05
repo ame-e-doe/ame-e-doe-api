@@ -1,0 +1,47 @@
+package com.api.loveanddonateapi.service;
+
+import com.api.loveanddonateapi.dto.SaleDto;
+import com.api.loveanddonateapi.exception.EntityNotFoundException;
+import com.api.loveanddonateapi.models.Sale;
+import com.api.loveanddonateapi.models.User;
+import com.api.loveanddonateapi.repository.SaleRepository;
+import com.api.loveanddonateapi.repository.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class SaleService {
+
+    @Autowired
+    private SaleRepository saleRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    private ModelMapper mapper = new ModelMapper();
+
+    public SaleDto createSale( SaleDto saleDto, Long userId ) {
+        User user = userRepository.findById( userId )
+                .orElseThrow(() -> new EntityNotFoundException( "Usuario de id: " + userId + " não encontrado." ) );
+        Sale sale = mapper.map( saleDto, Sale.class );
+        sale.setUser( user );
+        return mapper.map( saleRepository.save( sale ), SaleDto.class );
+    }
+
+    public List<SaleDto> getAllSales( Long userId ) {
+        return saleRepository.findAllByUserId(userId)
+                .stream()
+                .map( sale -> mapper.map( sale, SaleDto.class ) )
+                .collect( Collectors.toList() );
+    }
+
+    public SaleDto getSaleById( Long saleId ) {
+        return saleRepository.findById( saleId )
+                .map( sale -> mapper.map( sale, SaleDto.class ) )
+                .orElseThrow(() -> new EntityNotFoundException( "Pedido com id: " + saleId + " não encontrado." ));
+    }
+}
