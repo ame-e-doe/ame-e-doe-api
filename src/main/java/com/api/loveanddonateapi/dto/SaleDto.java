@@ -18,6 +18,6 @@ public class SaleDto {
 
     private double value;
 
-    private Set<DigitalProductDto> products = new HashSet<>();
+    private Set<DigitalProductDTO> products = new HashSet<>();
 
 }
