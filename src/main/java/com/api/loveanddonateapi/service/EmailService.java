@@ -1,6 +1,7 @@
 package com.api.loveanddonateapi.service;
 
 import com.api.loveanddonateapi.models.email.EmailSender;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+@Slf4j
 @Service
 public class EmailService implements EmailSender {
 
@@ -23,6 +25,7 @@ public class EmailService implements EmailSender {
     @Override
     @Async
     public void send( String to, String email ){
+        log.debug( "Send email for user by email {}", email );
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper( mimeMessage, "utf-8" );
