@@ -10,6 +10,7 @@ import com.api.loveanddonateapi.models.enums.ERole;
 import com.api.loveanddonateapi.repository.RoleRepository;
 import com.api.loveanddonateapi.repository.UserRepository;
 import com.api.loveanddonateapi.utils.EmailUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class SignUpService {
 
@@ -44,12 +46,15 @@ public class SignUpService {
     EmailSender emailSender;
 
     public ResponseEntity< ? > signUp( SignUpDTO signUpDTO ) {
+
+        log.debug( "Start validation for user exists {}", signUpDTO.getEmail() );
         if( userRepository.existsByEmail( signUpDTO.getEmail() ) ) {
             return ResponseEntity
                     .badRequest()
                     .body( new MessageResponse( "Error: Username is already exists" ) );
         }
 
+        log.debug( "User non exists proceed register {}", signUpDTO.getEmail() );
         User user = new User( signUpDTO.getEmail(),
                 passwordEncoder.encode( signUpDTO.getPassword() ) );
 
@@ -63,6 +68,7 @@ public class SignUpService {
         }
 
         user.setRoles( roles );
+        log.debug( "Save user in database {}", signUpDTO.getEmail() );
         userRepository.save( user );
 
         confirmationTokenService.saveConfirmationToken( generateConfirmationToken( user ) );
@@ -78,24 +84,26 @@ public class SignUpService {
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes( 15 ),
                 user );
-
+        log.debug( "Send email for this user {}", user.getEmail() );
         sendEmail( user.getEmail(), token );
 
         return confirmationToken;
     }
 
     private void sendEmail( String email, String token ) {
-        String link = "http://localhost:8080/auth/confirm?token=" + token;
+        String link = "http://localhost:8080/api/auth/confirm?token=" + token;
         emailSender.send( email, buildEmail( email, link ) );
     }
 
     @Transactional
     public ResponseEntity< ? > confirmToken( String token ) {
+        log.debug( "Validate token in database {}", token );
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken( token )
                 .orElseThrow( () ->
                         new RuntimeException( "Error: token not found" ) );
 
+        log.debug( "Validate in database token already confirmed {}", token );
         if( confirmationToken.getConfirmedAt() != null ) {
             return ResponseEntity
                     .badRequest()
@@ -104,6 +112,7 @@ public class SignUpService {
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
+        log.debug( "Validate token has ben expired {}", token );
         if( expiredAt.isBefore( LocalDateTime.now() ) ) {
             Optional< ConfirmationToken > user = confirmationTokenService.getToken( token );
             User test = user.get().getUser();
@@ -113,6 +122,7 @@ public class SignUpService {
                     .body( new MessageResponse( "Error: Token has ben expired, email was forwarded " ) );
         }
 
+        log.debug( "Update status token in database and enabled user {}", token );
         confirmationTokenService.setConfirmedAt( token );
         userService.enableUser(
                 confirmationToken.getUser().getEmail() );
