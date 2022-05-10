@@ -27,7 +27,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table( name = "CART" )
 public class Cart {
 
     @Id
