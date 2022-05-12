@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    password: admin123
+    password: rammstein-1
     url: jdbc:mysql://localhost:3306/lovedb
     username: root
   jpa:
