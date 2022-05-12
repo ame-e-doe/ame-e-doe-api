@@ -44,6 +44,7 @@ public class SignUpService {
 
     @Autowired
     EmailSender emailSender;
+    private User user;
 
     public ResponseEntity< ? > signUp( SignUpDTO signUpDTO ) {
 
@@ -51,11 +52,13 @@ public class SignUpService {
         if( userRepository.existsByEmail( signUpDTO.getEmail() ) ) {
             return ResponseEntity
                     .badRequest()
-                    .body( new MessageResponse( "Error: Username is already exists" ) );
+                    .body( new MessageResponse( "Erro: O usuário já existe!" ) );
         }
 
         log.debug( "User non exists proceed register {}", signUpDTO.getEmail() );
-        User user = new User( signUpDTO.getEmail(),
+        User user = new User(
+                signUpDTO.getName(),
+                signUpDTO.getEmail(),
                 passwordEncoder.encode( signUpDTO.getPassword() ) );
 
         String strRoles = ( signUpDTO.getRole() );
@@ -101,13 +104,13 @@ public class SignUpService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken( token )
                 .orElseThrow( () ->
-                        new RuntimeException( "Error: token not found" ) );
+                        new RuntimeException( "Token não encontrado" ) );
 
         log.debug( "Validate in database token already confirmed {}", token );
         if( confirmationToken.getConfirmedAt() != null ) {
             return ResponseEntity
                     .badRequest()
-                    .body( new MessageResponse( "Error: Email already confirmed" ) );
+                    .body( new MessageResponse( "Email já confirmado!" ) );
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
@@ -119,7 +122,7 @@ public class SignUpService {
             confirmationTokenService.saveConfirmationToken( generateConfirmationToken( test ) );
             return ResponseEntity
                     .badRequest()
-                    .body( new MessageResponse( "Error: Token has ben expired, email was forwarded " ) );
+                    .body( new MessageResponse( "Token expirado, um novo e-mail foi enviado!" ) );
         }
 
         log.debug( "Update status token in database and enabled user {}", token );
@@ -128,7 +131,7 @@ public class SignUpService {
                 confirmationToken.getUser().getEmail() );
         return ResponseEntity
                 .ok()
-                .body( new MessageResponse( "User enabled" ) );
+                .body( new MessageResponse( "E-mail confirmado com sucesso!" ) );
     }
 
     private String buildEmail( String name, String link ) {

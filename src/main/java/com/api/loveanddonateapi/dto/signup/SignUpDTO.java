@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @JsonInclude( JsonInclude.Include.NON_NULL )
@@ -14,6 +15,9 @@ import java.io.Serializable;
 public class SignUpDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @NotNull
+    private String name;
 
     @Email( message = "{email.invalid}")
     @NotBlank( message = "{required.field}")

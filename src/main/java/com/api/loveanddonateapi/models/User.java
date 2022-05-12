@@ -33,6 +33,7 @@ public class User implements UserDetails {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
+    @NotBlank
     private String name;
 
     @NotBlank
@@ -52,8 +53,10 @@ public class User implements UserDetails {
                 inverseJoinColumns = @JoinColumn( name = "id_role" ) )
     private List<Role> roles;
 
-    public User( String email,
+    public User( String name,
+                 String email,
                  String password ) {
+        this.name = name;
         this.email = email;
         this.password = password;
     }
@@ -101,32 +104,4 @@ public class User implements UserDetails {
         return enabled;
     }
 
-    @Override
-    public boolean equals( Object o ) {
-        if( this == o ) return true;
-        if( !( o instanceof User ) ) return false;
-        User user = ( User ) o;
-        return Objects.equals( getId(), user.getId() )
-                && Objects.equals( getName(), user.getName() )
-                && Objects.equals( getEmail(), user.getEmail() )
-                && Objects.equals( getPassword(), user.getPassword() )
-                && Objects.equals( isAccountNonExpired(), user.isAccountNonExpired() )
-                && Objects.equals( isAccountNonLocked(), user.isAccountNonLocked() )
-                && Objects.equals( isCredentialsNonExpired(), user.isCredentialsNonExpired() )
-                && Objects.equals( isEnabled(), user.isEnabled() )
-                && Objects.equals( getRoles(), user.getRoles() );
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash( getId(),
-                getName(),
-                getEmail(),
-                getPassword(),
-                isAccountNonExpired(),
-                isAccountNonLocked(),
-                isCredentialsNonExpired(),
-                isEnabled(),
-                getRoles() );
-    }
 }

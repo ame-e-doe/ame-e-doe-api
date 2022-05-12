@@ -43,11 +43,11 @@ public class SignInService {
         if( Objects.equals( isEnabled, false ) ) {
             return ResponseEntity
                     .status( HttpStatus.UNAUTHORIZED )
-                    .body( new MessageResponse( "Error: User is not enabled, please activate your account" ) );
+                    .body( new MessageResponse( "O usuário não está ativo! Por favor confirme seu e-mail e tente novamente." ) );
         } else if( !userRepository.existsByEmail( signInDTO.getEmail() ) ) {
             return ResponseEntity
                     .status( HttpStatus.UNAUTHORIZED )
-                    .body( new MessageResponse( "Error: User does not exist" ) );
+                    .body( new MessageResponse( "O usuário não existe!" ) );
         }
         return authenticated( signInDTO );
     }
@@ -65,7 +65,8 @@ public class SignInService {
                 .collect( Collectors.toList() );
         return ResponseEntity.ok( new JwtResponse( jwt,
                 user.getId(),
-                user.getUsername(),
+                user.getEmail(),
+                user.getName(),
                 roles ) );
     }
 
