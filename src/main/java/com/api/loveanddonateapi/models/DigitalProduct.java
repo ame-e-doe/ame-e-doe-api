@@ -32,7 +32,7 @@ public class DigitalProduct {
     private Long id;
 
     @Column( name = "URL_DIGI_PROD" )
-    private byte url;
+    private String url;
 
     @Column( name = "TITLE_DIGI_PROD" )
     private String title;
