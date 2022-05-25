@@ -57,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint( unauthorizedHandler )
                 .and().sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
                 .and().authorizeRequests().antMatchers( "/auth/**", "/card/**").permitAll();
+        //TODO: Configurar rotas que serão autenticadas
 //                .antMatchers( "/api/**" ).permitAll()
 //                .anyRequest().authenticated();
         http.addFilterBefore( authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class );
