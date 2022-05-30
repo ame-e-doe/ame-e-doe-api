@@ -1,5 +1,7 @@
 package com.api.loveanddonateapi.service;
 
+import com.api.loveanddonateapi.dto.response.CardResponse;
+import com.api.loveanddonateapi.dto.response.MessageResponse;
 import com.api.loveanddonateapi.models.Card;
 import com.api.loveanddonateapi.models.User;
 import com.api.loveanddonateapi.dto.CardDTO;
@@ -9,11 +11,11 @@ import com.api.loveanddonateapi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -25,7 +27,7 @@ public class CardService {
     @Autowired
     UserRepository userRepository;
 
-    private final ModelMapper mapper = new ModelMapper();
+    private ModelMapper mapper = new ModelMapper();
 
     public CardDTO createCard( CardDTO cardDTO, Long userId ) {
         Card card = mapper.map( cardDTO, Card.class );
@@ -41,12 +43,25 @@ public class CardService {
         return null;
     }
 
-    public List< CardDTO > getAllCards( Long userId ) {
+    public ResponseEntity< ? > getCard( Long userId ) {
         log.debug( "Find all cards for user with userId {}", userId );
-        return cardRepository.findAllCardsByUserId( userId )
-                .stream()
-                .map( card -> mapper.map( card, CardDTO.class ) )
-                .collect( Collectors.toList() );
+
+        Card card = cardRepository.findByUserId( userId );
+
+        if( !Objects.isNull( card ) ) {
+            return ResponseEntity
+                    .ok( new CardResponse(
+                            card.getUser().getId(),
+                            card.getCardNumber(),
+                            card.getSecurityCode(),
+                            card.getPrintedName(),
+                            card.getExpirationDate()
+                    ) );
+        } else
+            return ResponseEntity
+                    .badRequest()
+                    .body(
+                            new MessageResponse( "Não existe cartão cadastrado para este usuário" ) );
     }
 
     public void deleteCardById( Long cardId ) {

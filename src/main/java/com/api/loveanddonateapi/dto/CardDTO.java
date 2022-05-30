@@ -1,36 +1,31 @@
 package com.api.loveanddonateapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import java.time.LocalDate;
+import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
+@JsonInclude( JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
-public class CardDTO {
+public class CardDTO implements Serializable {
 
-    private Long id;
+    private static final long serialVersionUID = 1L;
 
-    @NotEmpty( message = "O número do cartão é obrigatório." )
-    @Length( max = 16, min = 13, message = "A quantidade minima de números é 13 e a máxima 16." )
+    @NotBlank( message = "{required.field}")
     private String cardNumber;
 
-    @NotNull( message = "O código de segurança não pode ser nulo." )
-    @Positive
-    private Integer securityCode;
+    @NotBlank( message = "{required.field}")
+    private String securityCode;
 
-    @NotEmpty( message = "O nome do cartão é obrigatório." )
-    @Length( max = 55, min = 10, message = "A quantidade minima de caracteres é 10 e a máxima 55." )
+    @NotBlank( message = "{required.field}")
     private String printedName;
 
-    @NotNull( message = "A data de expiração é obrigatória" )
-    private LocalDate expirationDate;
+    @NotBlank( message = "{required.field}")
+    private String expirationDate;
+
 }
