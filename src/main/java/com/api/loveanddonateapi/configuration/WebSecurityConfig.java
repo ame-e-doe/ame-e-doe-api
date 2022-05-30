@@ -56,10 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint( unauthorizedHandler )
                 .and().sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS )
-                .and().authorizeRequests().antMatchers( "/auth/**", "/card/**").permitAll();
-        //TODO: Configurar rotas que serão autenticadas
-//                .antMatchers( "/api/**" ).permitAll()
-//                .anyRequest().authenticated();
+                .and().authorizeRequests().antMatchers( "/api/auth/**", "/api/card/**").permitAll()
+                .antMatchers( "/api/v1/**" ).permitAll()
+                .anyRequest().authenticated();
         http.addFilterBefore( authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class );
     }
 
