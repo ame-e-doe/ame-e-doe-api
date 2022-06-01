@@ -14,7 +14,7 @@ public class DigitalProductDTO {
 
     private Long id;
 
-    private byte url;
+    private String url;
 
     private String title;
 
