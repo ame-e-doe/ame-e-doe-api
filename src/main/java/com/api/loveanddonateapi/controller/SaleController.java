@@ -12,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin( origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping( "/api/v1/sales" )
+@RequestMapping( "/api/sales" )
 public class SaleController {
 
     @Autowired
