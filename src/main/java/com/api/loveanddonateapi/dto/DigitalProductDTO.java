@@ -1,6 +1,8 @@
 package com.api.loveanddonateapi.dto;
 
+import com.api.loveanddonateapi.models.Card;
 import com.api.loveanddonateapi.models.Category;
+import com.api.loveanddonateapi.models.DigitalProduct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +25,14 @@ public class DigitalProductDTO {
     private Double value;
 
     private Category category;
+
+    public DigitalProductDTO(DigitalProduct entity) {
+        this.setId(entity.getId());
+        this.setUrl(entity.getUrl());
+        this.setTitle(entity.getTitle());
+        this.setDescription(entity.getDescription());
+        this.setValue(entity.getValue());
+        this.setCategory(entity.getCategory());
+    }
 
 }

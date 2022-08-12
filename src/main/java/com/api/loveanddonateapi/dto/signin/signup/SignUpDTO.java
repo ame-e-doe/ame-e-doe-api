@@ -1,4 +1,4 @@
-package com.api.loveanddonateapi.dto.signup;
+package com.api.loveanddonateapi.dto.signin.signup;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

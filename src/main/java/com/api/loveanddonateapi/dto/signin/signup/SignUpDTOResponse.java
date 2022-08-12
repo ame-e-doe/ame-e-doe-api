@@ -1,4 +1,4 @@
-package com.api.loveanddonateapi.dto.signup;
+package com.api.loveanddonateapi.dto.signin.signup;
 
 import com.api.loveanddonateapi.models.email.Email;
 import com.fasterxml.jackson.annotation.JsonInclude;

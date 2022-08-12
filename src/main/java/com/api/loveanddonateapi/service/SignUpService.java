@@ -1,7 +1,7 @@
 package com.api.loveanddonateapi.service;
 
 import com.api.loveanddonateapi.dto.response.MessageResponse;
-import com.api.loveanddonateapi.dto.signup.SignUpDTO;
+import com.api.loveanddonateapi.dto.signin.signup.SignUpDTO;
 import com.api.loveanddonateapi.models.ConfirmationToken;
 import com.api.loveanddonateapi.models.Role;
 import com.api.loveanddonateapi.models.User;
