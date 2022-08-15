@@ -5,25 +5,17 @@ server:
 
 spring:
   datasource:
+    url: jdbc:postgresql://localhost:5432/lovedb
+    username: postgres
     password: admin123
-    url: jdbc:mysql://localhost:3306/lovedb
-    username: root
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: false
-
-  flyway:
-    enabled: false
-    url: jdbc:mysql://localhost:3306/
-    schemas: lovedb
-    user: root
-    password: admin123
-    baseline-on-migrate: true
 
   mail:
     host: localhost
