@@ -1,14 +1,10 @@
 package com.api.loveanddonateapi.controller;
 
-import com.api.loveanddonateapi.dto.SaleDto;
 import com.api.loveanddonateapi.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin( origins = "*", maxAge = 3600)
 @RestController
@@ -18,7 +14,7 @@ public class SaleController {
     @Autowired
     private SaleService saleService;
 
-    @PostMapping( "create/{userId}" )
+    /*@PostMapping( "create/{userId}" )
     public ResponseEntity< SaleDto > createSale(
             @Valid @RequestBody SaleDto saleDto,
             @PathVariable Long userId ) {
@@ -34,6 +30,6 @@ public class SaleController {
     @GetMapping("/{saleId}")
     public ResponseEntity< SaleDto > getSaleById(@PathVariable Long saleId) {
         return ResponseEntity.ok( this.saleService.getSaleById(saleId) );
-    }
+    }*/
 
 }
