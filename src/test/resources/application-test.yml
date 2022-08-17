@@ -1,0 +1,23 @@
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+    show-sql: true
+
+lovesecurity:
+  app:
+    jwtSecret: l0v34ndD0n4t3
+    jwtExpirationMs: 86400000
