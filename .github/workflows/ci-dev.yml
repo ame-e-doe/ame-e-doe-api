@@ -1,8 +1,6 @@
 name: Java Build and Run Unit Tests
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
