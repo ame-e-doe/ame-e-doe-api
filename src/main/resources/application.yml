@@ -1,3 +1,15 @@
+app:
+  name: loveanddonate-api
+  api:
+    title: Ame e Doe APIs
+    version: 1.0.0
+    description: Ame e Doe APIs description
+    base-package: com.api.loveanddonateapi.controller
+    contact-name: apisupport
+    contact-email: edsonlimajll@gmail.com
+    swagger:
+      enable: true
+
 server:
   error:
     include-message: always
