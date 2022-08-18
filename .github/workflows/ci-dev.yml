@@ -1,4 +1,4 @@
-name: Java CI with Maven for DEV
+name: Java Build and Run Unit Tests
 
 on:
   push:
@@ -18,6 +18,5 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-          cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
