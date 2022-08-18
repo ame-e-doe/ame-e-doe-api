@@ -3,6 +3,8 @@ name: Java CI with Maven for DEV
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
