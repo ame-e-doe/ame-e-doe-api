@@ -5,19 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class SaleDto {
+public class DigitalProductCreateDTO {
 
     private Long id;
 
-    private double value;
+    private String url;
 
-    private Set<DigitalProductDTO> products = new HashSet<>();
+    private String title;
+
+    private String description;
+
+    private Double value;
+
+    private Long categoryId;
 
 }

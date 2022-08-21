@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Api( value = "Auth" )
 @CrossOrigin( origins = "*", maxAge = 3600 )
 @RestController
 @RequestMapping( "/api/auth" )
+@Api(tags = {"Autenticação"})
 public class AuthController {
 
     @Autowired

@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DigitalProductDTO {
+public class DigitalProductResponseDTO {
 
     private Long id;
 
@@ -25,7 +25,7 @@ public class DigitalProductDTO {
 
     private Category category;
 
-    public DigitalProductDTO(DigitalProduct entity) {
+    public DigitalProductResponseDTO(DigitalProduct entity) {
         this.setId(entity.getId());
         this.setUrl(entity.getUrl());
         this.setTitle(entity.getTitle());

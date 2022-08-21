@@ -18,7 +18,6 @@ public class DigitalProductsByUserDTO {
     private Long id;
     private String name;
     private String email;
-
-    private Set< DigitalProduct > products = new HashSet<>();
+    private Set<DigitalProduct> products = new HashSet<>();
 
 }

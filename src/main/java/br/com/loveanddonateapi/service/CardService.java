@@ -1,10 +1,12 @@
 package br.com.loveanddonateapi.service;
 
 import br.com.loveanddonateapi.dto.CardDTO;
+import br.com.loveanddonateapi.exception.EntityExistValidateException;
 import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Card;
+import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.CardRepository;
-import br.com.loveanddonateapi.repository.UserRepository;
+import br.com.loveanddonateapi.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,19 +14,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CardService implements BaseService< CardDTO, Card> {
+public class CardService implements BaseService<CardDTO> {
 
     @Autowired
     CardRepository cardRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
     @Override
-    public Card createOrUpdate(CardDTO cardDTO) {
+    public CardDTO create(CardDTO cardDTO, String token) {
+        Long userId = Long.parseLong(jwtUtils.getUserFromJwtToken(token));
+        cardExist(cardDTO.getCardNumber(), userId);
         Card card = cardDTO.asEntity(cardDTO);
-        //precisa pegar o usuario logado
-        return cardRepository.save(card);
+        User user = userService.getById(userId);
+        card.setUser(user);
+        return new CardDTO(cardRepository.save(card));
     }
 
     @Override
@@ -34,7 +42,7 @@ public class CardService implements BaseService< CardDTO, Card> {
     }
 
     @Override
-    public List<CardDTO> getAll() {
+    public List<CardDTO> getAll(String token) {
         return cardRepository.findAll().stream().map(card -> new CardDTO(card)).collect(Collectors.toList());
     }
 
@@ -43,5 +51,11 @@ public class CardService implements BaseService< CardDTO, Card> {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Cartão com identificador [%d] não encontrado.", id)));
         cardRepository.delete(card);
+    }
+
+    private void cardExist(String cardNumber, Long user) {
+        if (cardRepository.findCardByCardNumberAndUser(cardNumber, user).isPresent()) {
+            throw new EntityExistValidateException("Cartão já cadastrado.");
+        }
     }
 }
