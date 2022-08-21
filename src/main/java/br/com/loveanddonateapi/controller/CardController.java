@@ -42,7 +42,7 @@ public class CardController {
     }
 
     @ApiOperation(value = "Deleta um cartão pelo identificador")
-    @DeleteMapping("delete/{cardId}")
+    @DeleteMapping("{cardId}")
     public ResponseEntity<Void> deleteCard(@PathVariable Long cardId) {
         this.cardService.delete(cardId);
         return ResponseEntity.ok().build();

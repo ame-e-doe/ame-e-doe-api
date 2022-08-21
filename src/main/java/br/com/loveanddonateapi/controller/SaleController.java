@@ -27,7 +27,7 @@ public class SaleController {
         return ResponseEntity.ok(this.saleService.createSale(createSaleDto, token));
     }
 
-    @ApiOperation(value = "Lista todas as vendas de um usuario")
+    @ApiOperation(value = "Lista todas os pedidos de um usuario")
     @GetMapping("list")
     //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<List<SaleResponseDTO>> getAllSales(@RequestHeader("Authorization") String token) {

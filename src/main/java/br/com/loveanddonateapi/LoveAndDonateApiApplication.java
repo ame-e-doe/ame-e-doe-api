@@ -31,7 +31,7 @@ public class LoveAndDonateApiApplication {
 	}
 
 	private ApiInfo apiInfo() {
-		//construtor depreciado, quebra o galho. Melhorar depois.
+		//TODO: construtor depreciado, quebra o galho. Melhorar depois.
 		return new ApiInfo("ame-e-doe-api",
 				"API desenvolvida para o Projeto Integrador 4º Semestre",
 				"2.6.5",
