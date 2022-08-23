@@ -1,5 +1,7 @@
 package br.com.loveanddonateapi;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +41,14 @@ public class LoveAndDonateApiApplication {
 				null,
 				null,
 				null);
+	}
+
+	@Bean
+	public Cloudinary cloudinary() {
+		return new Cloudinary(ObjectUtils.asMap(
+				"cloud_name", "dpeowsyur",
+				"api_key", "585738557347225",
+				"api_secret", "kHtECO24BByVETYxvF3HPigUHP4"));
 	}
 
 }

@@ -115,6 +115,13 @@
             <version>3.0.0</version>
         </dependency>
 
+        <!-- armazenamento de imagens -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.24.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
