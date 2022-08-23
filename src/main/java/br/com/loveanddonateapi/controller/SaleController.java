@@ -1,35 +1,43 @@
 package br.com.loveanddonateapi.controller;
 
+import br.com.loveanddonateapi.dto.SaleCreateDTO;
+import br.com.loveanddonateapi.dto.SaleResponseDTO;
 import br.com.loveanddonateapi.service.SaleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin( origins = "*", maxAge = 3600)
+import javax.validation.Valid;
+import java.util.List;
+
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping( "/api/sales" )
+@RequestMapping("/api/sales/")
+@Api(tags = {"Pedidos"})
 public class SaleController {
 
     @Autowired
     private SaleService saleService;
 
-    /*@PostMapping( "create/{userId}" )
-    public ResponseEntity< SaleDto > createSale(
-            @Valid @RequestBody SaleDto saleDto,
-            @PathVariable Long userId ) {
-        return ResponseEntity.ok( this.saleService.createSale( saleDto, userId ) );
+    @ApiOperation(value = "Cadastra uma nova venda")
+    @PostMapping("create")
+    public ResponseEntity<SaleResponseDTO> create(@Valid @RequestBody SaleCreateDTO createSaleDto, @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(this.saleService.createSale(createSaleDto, token));
     }
 
-    @GetMapping("/list/{userId}")
-    @PreAuthorize( "hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')" )
-    public ResponseEntity< List<SaleDto> > getAllSales(@PathVariable Long userId) {
-        return ResponseEntity.ok( this.saleService.getAllSales(userId) );
+    @ApiOperation(value = "Lista todas os pedidos de um usuario")
+    @GetMapping("list")
+    //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<List<SaleResponseDTO>> getAllSales(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(this.saleService.getAll(token));
     }
 
-    @GetMapping("/{saleId}")
-    public ResponseEntity< SaleDto > getSaleById(@PathVariable Long saleId) {
-        return ResponseEntity.ok( this.saleService.getSaleById(saleId) );
-    }*/
+    @ApiOperation(value = "Consulta uma venda pelo identificador")
+    @GetMapping("{saleId}")
+    public ResponseEntity<SaleResponseDTO> getSaleById(@PathVariable Long saleId) {
+        return ResponseEntity.ok(this.saleService.getById(saleId));
+    }
 
 }

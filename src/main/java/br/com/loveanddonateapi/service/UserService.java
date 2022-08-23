@@ -1,5 +1,6 @@
 package br.com.loveanddonateapi.service;
 
+import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,6 @@ public class UserService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername( String email ) throws UsernameNotFoundException {
-
         log.debug( "Find user by email {}", email );
         var user = userRepository.findByEmail( email )
                 .orElseThrow( () -> new UsernameNotFoundException( "User not found with email: " + email ) );
@@ -31,6 +31,10 @@ public class UserService implements UserDetailsService {
     public int enableUser( String email ) {
         log.debug( "Enable user with email in databse {}", email );
         return userRepository.enableUser( email );
+    }
+
+    public User getById(Long id) {
+        return userRepository.getById(id);
     }
 
 }

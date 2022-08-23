@@ -1,5 +1,6 @@
 package br.com.loveanddonateapi.exception.handler;
 
+import br.com.loveanddonateapi.exception.EntityExistValidateException;
 import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.exception.InvalidJwtAuthenticationException;
 import br.com.loveanddonateapi.exception.StanderError;
@@ -17,27 +18,38 @@ import java.time.Instant;
 @RestController
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler( EntityNotFoundException.class )
-    public ResponseEntity< StanderError > entityNotFound( EntityNotFoundException e, HttpServletRequest request ) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<StanderError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
         StanderError error = new StanderError();
-        error.setTimestamp( Instant.now() );
-        error.setStatus( HttpStatus.NOT_FOUND.value() );
-        error.setError( "Entidade não encontrada." );
-        error.setMessage( e.getMessage() );
-        error.setPath( request.getRequestURI() );
-        return ResponseEntity.status( HttpStatus.NOT_FOUND ).body( error );
+        error.setTimestamp(Instant.now());
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setError("Entidade não encontrada.");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    @ExceptionHandler( InvalidJwtAuthenticationException.class )
-    public final ResponseEntity< StanderError > invalidJwtAuthenticationException( Exception ex, HttpServletRequest request ) {
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
+    public final ResponseEntity<StanderError> invalidJwtAuthenticationException(Exception ex, HttpServletRequest request) {
         StanderError standerError =
                 new StanderError(
                         Instant.now(),
                         HttpStatus.BAD_REQUEST.value(),
                         "Expired or invalid token",
                         ex.getMessage(),
-                        request.getRequestURI() );
-        return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(standerError);
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standerError);
+    }
+
+    @ExceptionHandler(EntityExistValidateException.class)
+    public ResponseEntity<StanderError> entityExist(EntityExistValidateException e, HttpServletRequest request) {
+        StanderError error = new StanderError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setError("Entidade já cadastrada.");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }

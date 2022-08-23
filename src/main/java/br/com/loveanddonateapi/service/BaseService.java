@@ -2,14 +2,13 @@ package br.com.loveanddonateapi.service;
 
 import java.util.List;
 
-public interface BaseService<Dto, Entity> {
+public interface BaseService<Dto> {
 
-    Entity createOrUpdate(Dto dto);
+    Dto create(Dto dto, String token);
 
     Dto getById(Long id);
 
-    List<Dto> getAll();
+    List<Dto> getAll(String token);
 
     void delete(Long id);
-
 }
