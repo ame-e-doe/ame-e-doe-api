@@ -1,0 +1,634 @@
+---
+swagger: '2.0'
+info:
+  description: API desenvolvida para o Projeto Integrador 4º Semestre
+  version: 2.6.5
+  title: ame-e-doe-api
+  contact: {}
+host: ame-e-doe-api.herokuapp.com
+basePath: "/"
+tags:
+  - name: Autenticação
+    description: Auth Controller
+  - name: Cartões
+    description: Card Controller
+  - name: Categorias
+    description: Category Controller
+  - name: Pedidos
+    description: Sale Controller
+  - name: Produtos
+    description: Digital Product Controller
+  - name: Rotas
+    description: Test Controller
+paths:
+  "/api/auth/confirm":
+    get:
+      tags:
+        - Autenticação
+      summary: Confirma registro
+      operationId: confirmUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: token
+          in: query
+          description: token
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/auth/signin":
+    post:
+      tags:
+        - Autenticação
+      summary: Valida autenticidade do usuário e retorna token de acesso
+      operationId: authenticateUserUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - "*/*"
+      parameters:
+        - in: body
+          name: signInDTO
+          description: signInDTO
+          required: true
+          schema:
+            "$ref": "#/definitions/SignInDTO"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/auth/signup":
+    post:
+      tags:
+        - Autenticação
+      summary: Realiza registro de novos usuários
+      operationId: registerUserUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - "*/*"
+      parameters:
+        - in: body
+          name: signupDTO
+          description: signupDTO
+          required: true
+          schema:
+            "$ref": "#/definitions/SignUpDTO"
+      responses:
+        '201':
+          description: Created
+          schema:
+            type: object
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/card/create/":
+    post:
+      tags:
+        - Cartões
+      summary: Cadastra um novo cartão
+      operationId: createUsingPOST
+      consumes:
+        - application/json
+      produces:
+        - "*/*"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - in: body
+          name: cardDTO
+          description: cardDTO
+          required: true
+          schema:
+            "$ref": "#/definitions/CardDTO"
+      responses:
+        '201':
+          description: Created
+          schema:
+            "$ref": "#/definitions/CardDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/card/list":
+    get:
+      tags:
+        - Cartões
+      summary: Lista todos cartões de um usuario
+      operationId: getAllCardsUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/CardDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/card/{cardId}":
+    get:
+      tags:
+        - Cartões
+      summary: Consulta cartão pelo identificador
+      operationId: getByIdUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: cardId
+          in: path
+          description: cardId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/CardDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - Cartões
+      summary: Deleta um cartão pelo identificador
+      operationId: deleteCardUsingDELETE
+      produces:
+        - "*/*"
+      parameters:
+        - name: cardId
+          in: path
+          description: cardId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  "/api/category/list":
+    get:
+      tags:
+        - Categorias
+      summary: Lista todas categorias
+      operationId: getAllCardsUsingGET_1
+      produces:
+        - "*/*"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Category"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/category/{categoryId}":
+    get:
+      tags:
+        - Categorias
+      summary: Consulta categoria pelo identificador
+      operationId: getByIdUsingGET_1
+      produces:
+        - "*/*"
+      parameters:
+        - name: categoryId
+          in: path
+          description: categoryId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/Category"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/products/list":
+    get:
+      tags:
+        - Produtos
+      summary: Lista todos os produtos
+      operationId: getAllProductsUsingGET
+      produces:
+        - "*/*"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/DigitalProductResponseDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/products/list/category/{idCategory}":
+    get:
+      tags:
+        - Produtos
+      summary: Consulta produto pelo identificador da categoria
+      operationId: getAllProductsByCategoryUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: idCategory
+          in: path
+          description: idCategory
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/DigitalProductResponseDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/products/list/search":
+    get:
+      tags:
+        - Produtos
+      summary: Lista produtos pela busca
+      operationId: getAllProductsBySearchUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: text
+          in: query
+          description: text
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/DigitalProductResponseDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/products/{idProduct}":
+    get:
+      tags:
+        - Produtos
+      summary: Consulta produto pelo identificador
+      operationId: getProductByIdUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: idProduct
+          in: path
+          description: idProduct
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/DigitalProductResponseDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/sales/create":
+    post:
+      tags:
+        - Pedidos
+      summary: Cadastra uma nova venda
+      operationId: createUsingPOST_1
+      consumes:
+        - application/json
+      produces:
+        - "*/*"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+        - in: body
+          name: createSaleDto
+          description: createSaleDto
+          required: true
+          schema:
+            "$ref": "#/definitions/SaleCreateDTO"
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/SaleResponseDTO"
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/sales/list":
+    get:
+      tags:
+        - Pedidos
+      summary: Lista todas os pedidos de um usuario
+      operationId: getAllSalesUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: Authorization
+          in: header
+          description: Authorization
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/SaleResponseDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/sales/{saleId}":
+    get:
+      tags:
+        - Pedidos
+      summary: Consulta uma venda pelo identificador
+      operationId: getSaleByIdUsingGET
+      produces:
+        - "*/*"
+      parameters:
+        - name: saleId
+          in: path
+          description: saleId
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/SaleResponseDTO"
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/test/admin":
+    get:
+      tags:
+        - Rotas
+      summary: adminAccess
+      operationId: adminAccessUsingGET
+      produces:
+        - "*/*"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/test/all":
+    get:
+      tags:
+        - Rotas
+      summary: allAccess
+      operationId: allAccessUsingGET
+      produces:
+        - "*/*"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/test/mod":
+    get:
+      tags:
+        - Rotas
+      summary: moderatorAccess
+      operationId: moderatorAccessUsingGET
+      produces:
+        - "*/*"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  "/api/test/user":
+    get:
+      tags:
+        - Rotas
+      summary: userAccess
+      operationId: userAccessUsingGET
+      produces:
+        - "*/*"
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+definitions:
+  CardDTO:
+    type: object
+    required:
+      - cardNumber
+      - expirationDate
+      - printedName
+      - securityCode
+    properties:
+      cardNumber:
+        type: string
+      expirationDate:
+        type: string
+      id:
+        type: integer
+        format: int64
+      printedName:
+        type: string
+      securityCode:
+        type: string
+    title: CardDTO
+  Category:
+    type: object
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+        format: int64
+    title: Category
+  DigitalProductResponseDTO:
+    type: object
+    properties:
+      category:
+        "$ref": "#/definitions/Category"
+      description:
+        type: string
+      id:
+        type: integer
+        format: int64
+      title:
+        type: string
+      url:
+        type: string
+      value:
+        type: number
+        format: double
+    title: DigitalProductResponseDTO
+  SaleCreateDTO:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      products:
+        type: array
+        uniqueItems: true
+        items:
+          type: integer
+          format: int64
+      value:
+        type: number
+        format: double
+    title: SaleCreateDTO
+  SaleResponseDTO:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      products:
+        type: array
+        uniqueItems: true
+        items:
+          "$ref": "#/definitions/DigitalProductResponseDTO"
+      value:
+        type: number
+        format: double
+    title: SaleResponseDTO
+  SignInDTO:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    title: SignInDTO
+  SignUpDTO:
+    type: object
+    required:
+      - email
+      - name
+      - password
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+    title: SignUpDTO
