@@ -1,4 +1,4 @@
-package br.com.loveanddonateapi.dto.signin;
+package br.com.loveanddonateapi.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
