@@ -13,7 +13,7 @@ public class DigitalProductCreateDTO {
 
     private Long id;
 
-    private String url;
+    private Long imageId;
 
     private String title;
 

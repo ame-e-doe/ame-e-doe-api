@@ -24,9 +24,6 @@ public class DigitalProduct {
     @Column( name = "ID_DIGI_PROD", nullable = false )
     private Long id;
 
-    @Column( name = "URL_DIGI_PROD" )
-    private String url;
-
     @OneToOne
     @JoinColumn( name = "ID_IMAGE" )
     private Image image;

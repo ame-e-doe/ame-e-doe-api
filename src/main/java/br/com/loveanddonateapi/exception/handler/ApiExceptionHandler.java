@@ -1,14 +1,12 @@
 package br.com.loveanddonateapi.exception.handler;
 
-import br.com.loveanddonateapi.exception.EntityExistValidateException;
-import br.com.loveanddonateapi.exception.EntityNotFoundException;
-import br.com.loveanddonateapi.exception.InvalidJwtAuthenticationException;
-import br.com.loveanddonateapi.exception.StanderError;
+import br.com.loveanddonateapi.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,6 +45,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         error.setTimestamp(Instant.now());
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setError("Entidade já cadastrada.");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<StanderError> uploadSizeExceededException(MaxUploadSizeExceededException e, HttpServletRequest request) {
+        StanderError error = new StanderError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setError("Arquivo excede o limite.");
+        error.setMessage("O tamanho maximo permitido é de 1MB");
+        error.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(InvalidFileException.class)
+    public ResponseEntity<StanderError> uploadSizeExceededException(InvalidFileException e, HttpServletRequest request) {
+        StanderError error = new StanderError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setError("Arquivo inválido.");
         error.setMessage(e.getMessage());
         error.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
