@@ -1,5 +1,7 @@
 package br.com.loveanddonateapi.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,8 +23,10 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table( name = "USERS" )
@@ -33,7 +37,10 @@ public class User implements UserDetails {
     private Long id;
 
     @NotBlank
-    private String name;
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
 
     @NotBlank
     @Email
@@ -51,14 +58,6 @@ public class User implements UserDetails {
                 joinColumns = @JoinColumn( name = "id_user" ),
                 inverseJoinColumns = @JoinColumn( name = "id_role" ) )
     private List<Role> roles;
-
-    public User( String name,
-                 String email,
-                 String password ) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
 
     public List< Role > getRoles() {
         return this.roles;
