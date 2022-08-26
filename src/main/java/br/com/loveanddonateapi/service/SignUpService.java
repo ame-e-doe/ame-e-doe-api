@@ -68,6 +68,7 @@ public class SignUpService {
         if( expiredAt.isBefore( LocalDateTime.now() ) ) {
             Optional< ConfirmationToken > user = confirmationTokenService.getToken( token );
             User test = user.get().getUser();
+//            TODO: Ajustar regras de token
             confirmationTokenService.saveConfirmationToken( test );
             return ResponseEntity
                     .badRequest()
