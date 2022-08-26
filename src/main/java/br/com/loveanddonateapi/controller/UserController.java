@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping( "/api/user" )
-@Api( tags = "{Controle de usuário}" )
+@Api( tags = "{Controle de usuário}")
 @Validated
 public class UserController {
 
