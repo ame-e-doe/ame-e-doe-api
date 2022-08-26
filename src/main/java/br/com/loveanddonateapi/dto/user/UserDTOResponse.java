@@ -1,8 +1,12 @@
-package br.com.loveanddonateapi.dto.signin.signup;
+package br.com.loveanddonateapi.dto.user;
 
 import br.com.loveanddonateapi.models.email.Email;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @Builder
@@ -10,7 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @JsonInclude( JsonInclude.Include.NON_NULL )
 @Setter
-public class SignUpDTOResponse {
+public class UserDTOResponse {
 
     private Email email;
 
