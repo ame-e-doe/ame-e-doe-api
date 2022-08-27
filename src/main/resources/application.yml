@@ -54,3 +54,8 @@ lovesecurity:
   app:
     jwtSecret: l0v34ndD0n4t3
     jwtExpirationMs: 86400000
+
+cloudinary:
+  cloud-name: dpeowsyur
+  api-key: 585738557347225
+  api-secret: kHtECO24BByVETYxvF3HPigUHP4

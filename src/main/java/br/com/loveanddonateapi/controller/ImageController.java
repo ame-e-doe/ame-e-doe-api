@@ -30,16 +30,15 @@ public class ImageController {
     @Deprecated
     @ApiOperation(value = "Upload de uma imagem - PARA CONSUMIR ESTE ENDPOINT O IDEAL É USAR O POSTMAN, POIS NELE É POSSIVEL SELECIONAR UMA IMAGEM PELO EXPLORADOR DE ARQUIVOS DA SUA MÁQUINA.")
     @PostMapping("upload")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Image> upload(@RequestParam MultipartFile image) {
-        return ResponseEntity.ok(imageService.save(image));
+        return new ResponseEntity<>(this.imageService.save(image), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Deleta uma imagem pelo identificador")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@RequestParam Long id) {
         this.imageService.delete(id);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
