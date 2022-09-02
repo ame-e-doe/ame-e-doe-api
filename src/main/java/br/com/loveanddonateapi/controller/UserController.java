@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping( "/api/user" )
-@Api( tags = "{Controle de usuário}")
+@Api( tags = "{Controle de usuário}" )
 @Validated
 public class UserController {
 
@@ -31,10 +31,10 @@ public class UserController {
     @PostMapping
     @ApiOperation( "Create user" )
     public ResponseEntity< UserDTOResponse > register( @Valid @RequestBody @ApiParam( required = true )
-                                                           UserDTO userDTO ) {
+                                                       UserDTO userDTO ) {
         Email mail = userService.registerUser( UserMapper.userDtoToEntity( userDTO ) );
         return new ResponseEntity<>( UserDTOResponse.builder()
-                .email( mail )
+                .message( mail )
                 .build(), HttpStatus.CREATED );
     }
 

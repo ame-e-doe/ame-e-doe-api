@@ -1,8 +1,9 @@
 package br.com.loveanddonateapi.models;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -14,8 +15,9 @@ import javax.persistence.Table;
 
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@Builder
+@Data
 @Table( name = "ROLES" )
 public class Role implements GrantedAuthority {
 
@@ -25,10 +27,6 @@ public class Role implements GrantedAuthority {
 
     @Column( name = "role_description", length = 20 )
     private String name;
-
-    public Role( String name ) {
-        this.name = name;
-    }
 
     public String getName() {
         return this.name;
