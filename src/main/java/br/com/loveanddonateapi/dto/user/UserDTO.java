@@ -14,8 +14,8 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @Data
 @AllArgsConstructor
-@ApiModel( value = "create user", description = "Data Transfer for create user" )
 @NoArgsConstructor
+@ApiModel( value = "create user", description = "Data Transfer for create user" )
 public class UserDTO {
 
     @ApiModelProperty( required = true )
