@@ -1,24 +1,10 @@
 package br.com.loveanddonateapi.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.Hibernate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,33 +12,23 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Table(name = "CART")
 public class Cart {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @Column( name = "ID_CART", nullable = false )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_CART", nullable = false)
     private Long id;
 
-    @Column( name = "DATE_CART" )
-    private LocalDateTime date = LocalDateTime.now();
+    @OneToOne
+    @JoinColumn(name = "USER_ID")
+    //@JsonIgnore
+    private User user;
 
-    @ManyToMany
-    @JoinTable( name = "CART_PRODUCTS",
-            joinColumns = @JoinColumn( name = "ID_CART" ),
-            inverseJoinColumns = @JoinColumn( name = "ID_PRODUCT" ) )
-    @ToString.Exclude
-    private Set< DigitalProduct > products = new HashSet<>();
+    @OneToMany(mappedBy = "cart")
+    private List<CartItem> cartItem;
 
-    @Override
-    public boolean equals( Object o ) {
-        if( this == o ) return true;
-        if( o == null || Hibernate.getClass( this ) != Hibernate.getClass( o ) ) return false;
-        Cart cart = ( Cart ) o;
-        return id != null && Objects.equals( id, cart.id );
-    }
+    @Column(name = "VALOR_TOTAL_CART")
+    private Double totalPrice;
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }
