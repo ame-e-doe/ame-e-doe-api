@@ -38,21 +38,32 @@ public class CartService {
         List<CartItem> itens = cart.getCartItem();
         DigitalProduct product = productRepository.getById(productId);
 
-        for (int i = 0; i < itens.size(); i++) {
-            CartItem cartItem = itens.get(i);
-            if (product.getId().equals(cartItem.getProduct().getId())) {
-                cartItem.setQuantity(cartItem.getQuantity() + 1);
-                cartItem.setPrice(cartItem.getQuantity() * cartItem.getProduct().getValue());
-                cartItemRepository.save(cartItem);
-               // break;
+        if (!itens.isEmpty()) {
+            for (CartItem item : itens) {
+                if (product.getId().equals(item.getProduct().getId())) {
+                    item.setQuantity(item.getQuantity() + 1);
+                    item.setPrice(item.getQuantity() * item.getProduct().getValue());
+                    cart.setTotalPrice(item.getPrice());
+                    cartItemRepository.save(item);
+                } else {
+                    CartItem cartItem = new CartItem();
+                    cartItem.setQuantity(1);
+                    cartItem.setProduct(product);
+                    cartItem.setPrice(product.getValue() * 1);
+                    cartItem.setCart(cart);
+                    cart.setTotalPrice(cart.getTotalPrice() + product.getValue());
+                    cartItemRepository.save(cartItem);
+                }
             }
+        } else {
+            CartItem cartItem = new CartItem();
+            cartItem.setQuantity(1);
+            cartItem.setProduct(product);
+            cartItem.setPrice(product.getValue() * 1);
+            cartItem.setCart(cart);
+            cart.setTotalPrice(product.getValue());
+            cartItemRepository.save(cartItem);
         }
-        CartItem cartItem = new CartItem();
-        cartItem.setQuantity(1);
-        cartItem.setProduct(product);
-        cartItem.setPrice(product.getValue() * 1);
-        cartItem.setCart(cart);
-        cartItemRepository.save(cartItem);
     }
 
 }
