@@ -2,6 +2,7 @@ package br.com.loveanddonateapi.dto;
 
 import br.com.loveanddonateapi.models.Category;
 import br.com.loveanddonateapi.models.DigitalProduct;
+import br.com.loveanddonateapi.models.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class DigitalProductResponseDTO {
 
     private Long id;
 
-    private String url;
+    private Image image;
 
     private String title;
 
@@ -27,7 +28,7 @@ public class DigitalProductResponseDTO {
 
     public DigitalProductResponseDTO(DigitalProduct entity) {
         this.setId(entity.getId());
-        this.setUrl(entity.getUrl());
+        this.setImage(entity.getImage());
         this.setTitle(entity.getTitle());
         this.setDescription(entity.getDescription());
         this.setValue(entity.getValue());
