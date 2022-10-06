@@ -27,7 +27,7 @@ public class CategoryController {
 
     @ApiOperation(value = "Lista todas categorias")
     @GetMapping("list")
-    public ResponseEntity<List<Category>> getAllCards() {
+    public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }
 

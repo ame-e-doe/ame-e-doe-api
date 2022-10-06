@@ -1,7 +1,10 @@
 package br.com.loveanddonateapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,7 +14,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Table(name = "CART")
 public class Cart {
 
@@ -22,7 +24,7 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "USER_ID")
-    //@JsonIgnore
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "cart")

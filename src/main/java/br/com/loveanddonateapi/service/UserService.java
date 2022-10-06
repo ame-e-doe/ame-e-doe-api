@@ -1,5 +1,6 @@
 package br.com.loveanddonateapi.service;
 
+import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.exception.user.RoleNotFoundException;
 import br.com.loveanddonateapi.exception.user.UserExistsException;
 import br.com.loveanddonateapi.mapper.UserMapper;
@@ -77,6 +78,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getById(Long id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado."));
     }
 }

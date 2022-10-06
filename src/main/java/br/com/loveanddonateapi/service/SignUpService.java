@@ -36,6 +36,9 @@ public class SignUpService {
     ConfirmationTokenService confirmationTokenService;
 
     @Autowired
+    CartService cartService;
+
+    @Autowired
     EmailSender emailSender;
 
 //    TODO: Refatorar envio de e-mail
