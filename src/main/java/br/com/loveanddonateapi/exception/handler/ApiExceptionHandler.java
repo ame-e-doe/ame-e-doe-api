@@ -1,75 +1,64 @@
 package br.com.loveanddonateapi.exception.handler;
 
 import br.com.loveanddonateapi.exception.*;
+import br.com.loveanddonateapi.exception.user.UserExistsException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.Instant;
 
-@ControllerAdvice
-@RestController
+@RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<StanderError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
-        StanderError error = new StanderError();
-        error.setTimestamp(Instant.now());
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setError("Entidade não encontrada.");
-        error.setMessage(e.getMessage());
-        error.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    @ExceptionHandler( EntityNotFoundException.class )
+    public ResponseEntity< ErrorResponse > entityNotFound( EntityNotFoundException e, HttpServletRequest request ) {
+        return ResponseEntity.status( HttpStatus.NOT_FOUND.value() )
+                .body( new ErrorResponse( e.getMessage(), request.getRequestURI() ) );
     }
 
-    @ExceptionHandler(InvalidJwtAuthenticationException.class)
-    public final ResponseEntity<StanderError> invalidJwtAuthenticationException(Exception ex, HttpServletRequest request) {
-        StanderError standerError =
-                new StanderError(
-                        Instant.now(),
-                        HttpStatus.BAD_REQUEST.value(),
-                        "Expired or invalid token",
-                        ex.getMessage(),
-                        request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standerError);
+    @ExceptionHandler( UserExistsException.class )
+    public ResponseEntity< ErrorResponse > userExistsException( UserExistsException e, HttpServletRequest request) {
+        return ResponseEntity.status( HttpStatus.BAD_REQUEST.value() )
+                .body( new ErrorResponse( e.getMessage(), request.getRequestURI() ) );
     }
 
-    @ExceptionHandler(EntityExistValidateException.class)
-    public ResponseEntity<StanderError> entityExist(EntityExistValidateException e, HttpServletRequest request) {
-        StanderError error = new StanderError();
-        error.setTimestamp(Instant.now());
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
-        error.setError("Entidade já cadastrada.");
-        error.setMessage(e.getMessage());
-        error.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    @ExceptionHandler( InvalidJwtAuthenticationException.class )
+    public final ResponseEntity< ErrorResponse > invalidJwtAuthenticationException( Exception ex, HttpServletRequest request ) {
+        return ResponseEntity.status( HttpStatus.BAD_REQUEST.value() )
+                .body( new ErrorResponse( ex.getMessage(), request.getRequestURI() ) );
     }
 
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<StanderError> uploadSizeExceededException(MaxUploadSizeExceededException e, HttpServletRequest request) {
-        StanderError error = new StanderError();
-        error.setTimestamp(Instant.now());
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
-        error.setError("Arquivo excede o limite.");
-        error.setMessage("O tamanho maximo permitido é de 1MB");
-        error.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    @ExceptionHandler( EntityExistValidateException.class )
+    public ResponseEntity< ErrorResponse > entityExist( EntityExistValidateException e, HttpServletRequest request ) {
+        return ResponseEntity.status( HttpStatus.BAD_REQUEST.value() )
+                .body( new ErrorResponse( e.getMessage(), request.getRequestURI() ) );
     }
 
-    @ExceptionHandler(InvalidFileException.class)
-    public ResponseEntity<StanderError> uploadSizeExceededException(InvalidFileException e, HttpServletRequest request) {
-        StanderError error = new StanderError();
-        error.setTimestamp(Instant.now());
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
-        error.setError("Arquivo inválido.");
-        error.setMessage(e.getMessage());
-        error.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    @ExceptionHandler( MaxUploadSizeExceededException.class )
+    public ResponseEntity< ErrorResponse > uploadSizeExceededException( MaxUploadSizeExceededException e, HttpServletRequest request ) {
+        return ResponseEntity.status( HttpStatus.BAD_REQUEST.value() )
+                .body( new ErrorResponse( e.getMessage(), request.getRequestURI() ) );
+    }
+
+    @ExceptionHandler( InvalidFileException.class )
+    public ResponseEntity< ErrorResponse > uploadSizeExceededException( InvalidFileException e, HttpServletRequest request ) {
+        return ResponseEntity.status( HttpStatus.BAD_REQUEST.value() )
+                .body( new ErrorResponse( e.getMessage(), request.getRequestURI() ) );
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid( MethodArgumentNotValidException ex, HttpHeaders headers,
+                                                                   HttpStatus status, WebRequest request ) {
+
+        return ResponseEntity.status( HttpStatus.BAD_REQUEST )
+                .body( new ErrorResponse( ex.getBindingResult() ) );
     }
 
 }
