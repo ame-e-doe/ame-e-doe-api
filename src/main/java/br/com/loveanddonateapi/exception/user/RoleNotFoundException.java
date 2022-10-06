@@ -1,4 +1,4 @@
-package br.com.loveanddonateapi.exception;
+package br.com.loveanddonateapi.exception.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
