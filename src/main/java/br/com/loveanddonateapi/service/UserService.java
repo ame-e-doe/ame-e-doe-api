@@ -1,6 +1,6 @@
 package br.com.loveanddonateapi.service;
 
-import br.com.loveanddonateapi.exception.RoleNotFoundException;
+import br.com.loveanddonateapi.exception.user.RoleNotFoundException;
 import br.com.loveanddonateapi.exception.user.UserExistsException;
 import br.com.loveanddonateapi.mapper.UserMapper;
 import br.com.loveanddonateapi.models.Role;

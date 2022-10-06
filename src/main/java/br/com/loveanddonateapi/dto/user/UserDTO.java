@@ -32,8 +32,8 @@ public class UserDTO {
     private String email;
 
     @ApiModelProperty( required = true, notes = "Min 8, Max 16" )
-    @Length( min = 8, max = 16 )
-    @NotBlank
+    @Length( min = 8, max = 16, message = "{password.validation}")
+    @NotBlank( message = "{required.field}")
     private String password;
 
     private String role;
