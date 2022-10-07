@@ -10,7 +10,7 @@
     </parent>
     <groupId>LoveAndDonate</groupId>
     <artifactId>loveanddonate-api</artifactId>
-    <version>2.8.0</version>
+    <version>3.0.0</version>
     <name>loveanddonate-api</name>
     <description>Register And Management Users Love Donate API</description>
 
@@ -93,7 +93,6 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
