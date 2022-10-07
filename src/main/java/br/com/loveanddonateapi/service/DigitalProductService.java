@@ -3,12 +3,11 @@ package br.com.loveanddonateapi.service;
 import br.com.loveanddonateapi.dto.DigitalProductResponseDTO;
 import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Category;
+import br.com.loveanddonateapi.models.DigitalProduct;
 import br.com.loveanddonateapi.repository.CategoryRepository;
 import br.com.loveanddonateapi.repository.DigitalProductRepository;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +46,11 @@ public class DigitalProductService {
         return this.digitalProductRepository.findAll()
                 .stream().map(product -> new DigitalProductResponseDTO(product))
                 .collect(Collectors.toList());
+    }
+
+    public DigitalProduct findById(Long id) {
+        return this.digitalProductRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Produto com identificador [%d] não encontrado.", id)));
     }
 
 }

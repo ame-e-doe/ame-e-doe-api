@@ -1,5 +1,6 @@
 package br.com.loveanddonateapi.service;
 
+import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +35,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User getById(Long id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado."));
     }
 
 }

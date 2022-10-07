@@ -39,7 +39,7 @@ public class JwtUtils {
         User userPrincipal = ( User ) authentication.getPrincipal();
 
         return Jwts.builder()
-                .setSubject( userPrincipal.getUsername() )
+                .setSubject( userPrincipal.getEmail() )
                 .setId( userPrincipal.getId().toString() )
                 .setIssuedAt( new Date() )
                 .setExpiration( new Date(new Date().getTime() + jwtExpirationMs ) )

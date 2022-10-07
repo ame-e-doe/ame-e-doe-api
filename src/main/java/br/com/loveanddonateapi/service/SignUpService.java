@@ -43,6 +43,9 @@ public class SignUpService {
     ConfirmationTokenService confirmationTokenService;
 
     @Autowired
+    CartService cartService;
+
+    @Autowired
     EmailSender emailSender;
     private User user;
 
@@ -75,6 +78,8 @@ public class SignUpService {
         userRepository.save( user );
 
         confirmationTokenService.saveConfirmationToken( generateConfirmationToken( user ) );
+
+        cartService.createCart(user);
 
         return ResponseEntity.ok( new MessageResponse(
                 EmailUtils
