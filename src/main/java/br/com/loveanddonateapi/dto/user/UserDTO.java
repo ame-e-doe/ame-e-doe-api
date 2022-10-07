@@ -27,7 +27,7 @@ public class UserDTO {
     private String lastName;
 
     @ApiModelProperty( required = true )
-    @Email
+    @Email( message = "{email.validation}")
     @NotBlank( message = "{required.field}" )
     private String email;
 

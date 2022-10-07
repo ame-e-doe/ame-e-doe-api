@@ -19,6 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -68,8 +70,47 @@ public class UserControllerTest extends MapperUtils {
         mockMvc.perform( post( PATH + BASE_URL )
                         .contentType( MediaType.APPLICATION_JSON )
                         .content( json ) )
-                .andExpect( status()
-                        .isBadRequest() );
+                .andExpect( status().isBadRequest() )
+                .andExpect( jsonPath( "errors" ).value( hasSize( 4 ) ) )
+                .andExpect( jsonPath( "errors.[0].message", equalTo( "Campo Obrigatório" ) ) );
+
+    }
+
+    @Test
+    @DisplayName( "deve lançar erro ao tentar cadastrar usuário com senha inválida" )
+    public void deveLancarErroAoCadastrarUsuarioSenhaInvalida() throws Exception {
+
+        UserDTO userDTO = createValidUser();
+
+        userDTO.setPassword( "1" );
+
+        String json = new ObjectMapper().writeValueAsString( userDTO );
+
+        mockMvc.perform( post( PATH + BASE_URL )
+                        .contentType( MediaType.APPLICATION_JSON )
+                        .content( json ) )
+                .andExpect( status().isBadRequest() )
+                .andExpect( jsonPath( "errors" ).value( hasSize( 1 ) ) )
+                .andExpect( jsonPath( "errors.[0].message", equalTo( "A Senha deve conter no mínimo 8 e no máximo 16 carateres" ) ) );
+
+    }
+
+    @Test
+    @DisplayName( "deve lançar erro ao tentar cadastrar usuário com email inválido" )
+    public void deveLancarErroAoCadastrarUsuarioEmailInvalido() throws Exception {
+
+        UserDTO userDTO = createValidUser();
+
+        userDTO.setEmail( "1" );
+
+        String json = new ObjectMapper().writeValueAsString( userDTO );
+
+        mockMvc.perform( post( PATH + BASE_URL )
+                        .contentType( MediaType.APPLICATION_JSON )
+                        .content( json ) )
+                .andExpect( status().isBadRequest() )
+                .andExpect( jsonPath( "errors" ).value( hasSize( 1 ) ) )
+                .andExpect( jsonPath( "errors.[0].message", equalTo( "O e-mail informado não é válido" ) ) );
     }
 
     private static UserDTO createValidUser() {
