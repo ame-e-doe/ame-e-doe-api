@@ -33,6 +33,6 @@ public class CartController {
     @ApiOperation(value = "Remove um item do carrinho de compras.")
     @DeleteMapping("{cartItemId}")
     public ResponseEntity<Cart> removeCartItem(@RequestHeader("Authorization") String token, @PathVariable Long cartItemId) {
-        return new ResponseEntity<>(this.cartService.removeCartItem(token, cartItemId), HttpStatus.OK);
+        return new ResponseEntity<>(this.cartService.removeCartItem(token, cartItemId), HttpStatus.NO_CONTENT);
     }
 }
