@@ -38,6 +38,7 @@ public class SignUpService {
     @Autowired
     EmailSender emailSender;
 
+//    TODO: Refatorar envio de e-mail
     private void sendEmail( String email, String token ) {
         String link = "http://localhost:8080/api/auth/confirm?token=" + token;
         emailSender.send( email, buildEmail( email, link ) );
