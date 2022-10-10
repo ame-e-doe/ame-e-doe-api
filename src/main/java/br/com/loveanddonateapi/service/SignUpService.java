@@ -40,47 +40,6 @@ public class SignUpService {
 
     @Autowired
     EmailSender emailSender;
-    private User user;
-
-    public ResponseEntity< ? > signUp( SignUpDTO signUpDTO ) {
-
-        log.debug( "Start validation for user exists {}", signUpDTO.getEmail() );
-        if( userRepository.existsByEmail( signUpDTO.getEmail() ) ) {
-            return ResponseEntity
-                    .badRequest()
-                    .body( new MessageResponse( "Erro: O usuário já existe!" ) );
-        }
-
-        log.debug( "User non exists proceed register {}", signUpDTO.getEmail() );
-        User user = new User(
-                signUpDTO.getName(),
-                signUpDTO.getEmail(),
-                passwordEncoder.encode( signUpDTO.getPassword() ) );
-
-        String strRoles = ( signUpDTO.getRole() );
-        List< Role > roles = new ArrayList<>();
-
-        if( strRoles == null ) {
-            Role userRole = roleRepository.findByName( ERole.ROLE_USER.name() )
-                    .orElseThrow( () -> new RuntimeException( "Error: Role is not found" ) );
-            roles.add( userRole );
-        }
-
-        user.setRoles( roles );
-        log.debug( "Save user in database {}", signUpDTO.getEmail() );
-        userRepository.save( user );
-
-        confirmationTokenService.saveConfirmationToken( generateConfirmationToken( user ) );
-
-        cartService.createCart(user);
-
-        return ResponseEntity.ok( new MessageResponse(
-                EmailUtils
-                        .formatterEmail( signUpDTO.getEmail() ) ) );
-    }
-
-    @Autowired
-    EmailSender emailSender;
 
 //    TODO: Refatorar envio de e-mail
     private void sendEmail( String email, String token ) {
