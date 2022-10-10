@@ -11,14 +11,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor( access = AccessLevel.PRIVATE )
 public class UserMapper {
 
+//    TODO: Usuário já nasce habilitado, e não possuimos a estapa de validacao de e-mail.
     public static User userDtoToEntity( UserDTO userDTO ) {
         return User.builder()
                 .firstName( userDTO.getFirstName() )
                 .lastName( userDTO.getLastName() )
                 .password( userDTO.getPassword() )
                 .email( userDTO.getEmail() )
-                .locked( true )
-                .enabled( false )
+                .locked( false )
+                .enabled( true )
                 .build();
     }
 
