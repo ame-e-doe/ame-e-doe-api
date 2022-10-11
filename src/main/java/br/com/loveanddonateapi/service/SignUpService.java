@@ -1,15 +1,11 @@
 package br.com.loveanddonateapi.service;
 
 import br.com.loveanddonateapi.dto.response.MessageResponse;
-import br.com.loveanddonateapi.dto.signin.signup.SignUpDTO;
 import br.com.loveanddonateapi.models.ConfirmationToken;
-import br.com.loveanddonateapi.models.Role;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.models.email.EmailSender;
-import br.com.loveanddonateapi.models.enums.ERole;
 import br.com.loveanddonateapi.repository.RoleRepository;
 import br.com.loveanddonateapi.repository.UserRepository;
-import br.com.loveanddonateapi.utils.EmailUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -47,57 +40,8 @@ public class SignUpService {
 
     @Autowired
     EmailSender emailSender;
-    private User user;
 
-    public ResponseEntity< ? > signUp( SignUpDTO signUpDTO ) {
-
-        log.debug( "Start validation for user exists {}", signUpDTO.getEmail() );
-        if( userRepository.existsByEmail( signUpDTO.getEmail() ) ) {
-            return ResponseEntity
-                    .badRequest()
-                    .body( new MessageResponse( "Erro: O usuário já existe!" ) );
-        }
-
-        log.debug( "User non exists proceed register {}", signUpDTO.getEmail() );
-        User user = new User(
-                signUpDTO.getName(),
-                signUpDTO.getEmail(),
-                passwordEncoder.encode( signUpDTO.getPassword() ) );
-
-        String strRoles = ( signUpDTO.getRole() );
-        List< Role > roles = new ArrayList<>();
-
-        if( strRoles == null ) {
-            Role userRole = roleRepository.findByName( ERole.ROLE_USER.name() )
-                    .orElseThrow( () -> new RuntimeException( "Error: Role is not found" ) );
-            roles.add( userRole );
-        }
-
-        user.setRoles( roles );
-        log.debug( "Save user in database {}", signUpDTO.getEmail() );
-        userRepository.save( user );
-
-        confirmationTokenService.saveConfirmationToken( generateConfirmationToken( user ) );
-
-        cartService.createCart(user);
-
-        return ResponseEntity.ok( new MessageResponse(
-                EmailUtils
-                        .formatterEmail( signUpDTO.getEmail() ) ) );
-    }
-
-    private ConfirmationToken generateConfirmationToken( User user ) {
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken( token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes( 15 ),
-                user );
-        log.debug( "Send email for this user {}", user.getEmail() );
-        sendEmail( user.getEmail(), token );
-
-        return confirmationToken;
-    }
-
+//    TODO: Refatorar envio de e-mail
     private void sendEmail( String email, String token ) {
         String link = "http://localhost:8080/api/auth/confirm?token=" + token;
         emailSender.send( email, buildEmail( email, link ) );
@@ -124,7 +68,8 @@ public class SignUpService {
         if( expiredAt.isBefore( LocalDateTime.now() ) ) {
             Optional< ConfirmationToken > user = confirmationTokenService.getToken( token );
             User test = user.get().getUser();
-            confirmationTokenService.saveConfirmationToken( generateConfirmationToken( test ) );
+//            TODO: Ajustar regras de token
+            confirmationTokenService.saveConfirmationToken( test );
             return ResponseEntity
                     .badRequest()
                     .body( new MessageResponse( "Token expirado, um novo e-mail foi enviado!" ) );

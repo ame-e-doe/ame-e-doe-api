@@ -1,10 +1,10 @@
 package br.com.loveanddonateapi.service;
 
-import br.com.loveanddonateapi.dto.signin.SignInDTO;
-import br.com.loveanddonateapi.models.User;
-import br.com.loveanddonateapi.security.jwt.JwtUtils;
 import br.com.loveanddonateapi.dto.response.MessageResponse;
+import br.com.loveanddonateapi.dto.user.SignInDTO;
+import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.UserRepository;
+import br.com.loveanddonateapi.security.jwt.JwtUtils;
 import br.com.loveanddonateapi.security.response.JwtResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +66,7 @@ public class SignInService {
         return ResponseEntity.ok( new JwtResponse( jwt,
                 user.getId(),
                 user.getEmail(),
-                user.getName(),
+                user.getFirstName(),
                 roles ) );
     }
 
