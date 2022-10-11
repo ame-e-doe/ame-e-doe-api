@@ -34,6 +34,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     ConfirmationTokenService confirmationTokenService;
 
+    @Autowired
+    CartService cartService;
+
     public Email registerUser( User user ) {
 
         if( userRepository.existsByEmail( user.getEmail() ) ) {
@@ -49,9 +52,18 @@ public class UserService implements UserDetailsService {
     }
 
     private void createUser( User user ) {
-        user.setPassword( UserMapper.encrypt().encode( user.getPassword() ) );
+
+        user.setPassword( UserMapper
+                .encrypt()
+                .encode(
+                        user.getPassword() ) );
+
         user.setRoles( generateRole( null ) );
-        userRepository.save( user );
+
+        User userSaved = userRepository.save( user );
+
+        cartService.createCart( userSaved );
+
     }
 
     private List<Role> generateRole( String role ) {
