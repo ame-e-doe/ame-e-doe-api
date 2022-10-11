@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping
+    @PostMapping( "/register" )
     @ApiOperation( "Create user" )
     public ResponseEntity< UserDTOResponse > register( @Valid @RequestBody @ApiParam( required = true )
                                                        UserDTO userDTO ) {
