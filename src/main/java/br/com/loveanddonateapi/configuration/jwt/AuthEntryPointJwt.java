@@ -1,4 +1,4 @@
-package br.com.loveanddonateapi.security.jwt;
+package br.com.loveanddonateapi.configuration.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

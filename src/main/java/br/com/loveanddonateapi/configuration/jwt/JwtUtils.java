@@ -1,4 +1,4 @@
-package br.com.loveanddonateapi.security.jwt;
+package br.com.loveanddonateapi.configuration.jwt;
 
 import br.com.loveanddonateapi.service.UserService;
 import br.com.loveanddonateapi.exception.InvalidJwtAuthenticationException;

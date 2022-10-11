@@ -1,8 +1,9 @@
-package br.com.loveanddonateapi.configuration;
+package br.com.loveanddonateapi.configuration.security;
 
+import br.com.loveanddonateapi.configuration.jwt.AuthEntryPointJwt;
+import br.com.loveanddonateapi.configuration.jwt.AuthTokenFilter;
 import br.com.loveanddonateapi.service.UserService;
-import br.com.loveanddonateapi.security.jwt.AuthEntryPointJwt;
-import br.com.loveanddonateapi.security.jwt.AuthTokenFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +13,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@AllArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity( prePostEnabled = true )
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -51,10 +51,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure( HttpSecurity http ) throws Exception {
-        http.cors().and().csrf().disable();
-        http.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
-        http.authorizeHttpRequests((auth) -> auth.anyRequest().permitAll());
-        http.addFilterBefore( authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class );
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                    .antMatchers( "/api/user/register", "/api/products/**", "/api/category/**", "/api/images/**" )
+                    .permitAll()
+                .anyRequest()
+                .authenticated().and()
+                .formLogin();
+
+//        TODO: Revisar regra!
+//        http.cors().and().csrf().disable();
+//        http.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
+//        http.authorizeHttpRequests((auth) -> auth.anyRequest().permitAll());
+//        http.addFilterBefore( authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class );
     }
 
 }
