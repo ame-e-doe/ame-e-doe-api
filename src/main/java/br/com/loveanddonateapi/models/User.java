@@ -1,24 +1,10 @@
 package br.com.loveanddonateapi.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,26 +14,17 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table( name = "USERS" )
+@Setter
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
-    @NotBlank
     private String firstName;
-
-    @NotBlank
     private String lastName;
-
-    @NotBlank
-    @Email
-    @Column( name = "email" )
     private String email;
-
-    @NotBlank
     private String password;
-
     private Boolean locked = false;
     private Boolean enabled = false;
 
@@ -56,6 +33,15 @@ public class User implements UserDetails {
                 joinColumns = @JoinColumn( name = "id_user" ),
                 inverseJoinColumns = @JoinColumn( name = "id_role" ) )
     private List<Role> roles;
+
+    @OneToOne(
+            fetch = FetchType.EAGER,
+            orphanRemoval = true,
+            cascade = { CascadeType.ALL } )
+    @JoinTable( name = "cart",
+                joinColumns = @JoinColumn(name = "id_user"),
+                inverseJoinColumns = @JoinColumn( name = "id") )
+    private Cart cart;
 
     public List< Role > getRoles() {
         return this.roles;

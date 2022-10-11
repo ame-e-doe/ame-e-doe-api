@@ -32,7 +32,7 @@ public class Sale {
     private Set<DigitalProduct> products = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "ID_USER")
     private User user;
 
     @Column(name = "VALUE_ORDER")

@@ -40,7 +40,7 @@ public class Card implements Serializable {
     private String expirationDate;
 
     @ManyToOne
-    @JoinColumn( name = "USER_ID" )
+    @JoinColumn( name = "ID_USER" )
     private User user;
 
 }
