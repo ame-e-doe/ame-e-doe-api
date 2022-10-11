@@ -12,6 +12,6 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     @Override
     Cart save( Cart cart );
 
-    Optional<Cart> getCartByIdUser( Long idUser );
+    Optional<Cart> getCartsByUserId( Long idUser );
 
 }
