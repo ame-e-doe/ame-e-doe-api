@@ -6,7 +6,7 @@ import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Card;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.CardRepository;
-import br.com.loveanddonateapi.security.jwt.JwtUtils;
+import br.com.loveanddonateapi.configuration.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
