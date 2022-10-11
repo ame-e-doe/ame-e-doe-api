@@ -34,15 +34,6 @@ public class User implements UserDetails {
                 inverseJoinColumns = @JoinColumn( name = "id_role" ) )
     private List<Role> roles;
 
-    @OneToOne(
-            fetch = FetchType.EAGER,
-            orphanRemoval = true,
-            cascade = { CascadeType.ALL } )
-    @JoinTable( name = "cart",
-                joinColumns = @JoinColumn(name = "id_user"),
-                inverseJoinColumns = @JoinColumn( name = "id") )
-    private Cart cart;
-
     public List< Role > getRoles() {
         return this.roles;
     }
