@@ -21,9 +21,11 @@ public class Cart {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "id_user")
     @JsonIgnore
+    @OneToOne
+    @JoinColumn(
+            nullable = false,
+            name = "id_user")
     private User user;
 
     @OneToMany(mappedBy = "cart")

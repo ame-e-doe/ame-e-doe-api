@@ -27,8 +27,8 @@ public class AuthController {
     @Autowired
     SignInService signInService;
 
-    @ApiOperation( value = "Valida autenticidade do usuário e retorna token de acesso")
-    @PostMapping( "/signin" )
+    @PostMapping( "/login" )
+    @ApiOperation( value = "Realiza login")
     public ResponseEntity< ? > authenticateUser( @Valid @RequestBody SignInDTO signInDTO ) {
         return signInService.auth( signInDTO );
     }
