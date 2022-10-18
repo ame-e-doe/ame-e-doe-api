@@ -12,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(path = "/api/category/")
+@RequestMapping(path = "/api/category")
 @Api(tags = {"Categorias"})
 public class CategoryController {
 
@@ -20,13 +20,13 @@ public class CategoryController {
     CategoryService categoryService;
 
     @ApiOperation(value = "Consulta categoria pelo identificador")
-    @GetMapping("{categoryId}")
+    @GetMapping("/{categoryId}")
     public ResponseEntity<Category> getById(@PathVariable Long categoryId) {
         return ResponseEntity.ok(categoryService.getById(categoryId));
     }
 
     @ApiOperation(value = "Lista todas categorias")
-    @GetMapping("list")
+    @GetMapping("/list")
     public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }

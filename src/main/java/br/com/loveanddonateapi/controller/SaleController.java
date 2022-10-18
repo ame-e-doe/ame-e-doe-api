@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/sales/")
+@RequestMapping("/api/sales")
 @Api(tags = {"Pedidos"})
 public class SaleController {
 
@@ -22,20 +22,19 @@ public class SaleController {
     private SaleService saleService;
 
     @ApiOperation(value = "Cadastra uma nova venda")
-    @PostMapping("create")
+    @PostMapping("/create")
     public ResponseEntity<SaleResponseDTO> create(@Valid @RequestBody SaleCreateDTO createSaleDto, @RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(this.saleService.createSale(createSaleDto, token));
     }
 
     @ApiOperation(value = "Lista todas os pedidos de um usuario")
-    @GetMapping("list")
-    //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @GetMapping("/list")
     public ResponseEntity<List<SaleResponseDTO>> getAllSales(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(this.saleService.getAll(token));
     }
 
     @ApiOperation(value = "Consulta uma venda pelo identificador")
-    @GetMapping("{saleId}")
+    @GetMapping("/{saleId}")
     public ResponseEntity<SaleResponseDTO> getSaleById(@PathVariable Long saleId) {
         return ResponseEntity.ok(this.saleService.getById(saleId));
     }
