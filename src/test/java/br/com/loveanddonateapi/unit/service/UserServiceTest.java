@@ -6,6 +6,7 @@ import br.com.loveanddonateapi.models.email.Email;
 import br.com.loveanddonateapi.models.enums.ERole;
 import br.com.loveanddonateapi.repository.RoleRepository;
 import br.com.loveanddonateapi.repository.UserRepository;
+import br.com.loveanddonateapi.service.CartService;
 import br.com.loveanddonateapi.service.ConfirmationTokenService;
 import br.com.loveanddonateapi.service.UserService;
 import br.com.loveanddonateapi.utils.EmailUtils;
@@ -37,6 +38,9 @@ public class UserServiceTest {
 
     @MockBean
     ConfirmationTokenService confirmationTokenService;
+
+    @MockBean
+    CartService cartService;
 
     @Test
     @DisplayName( "deve cadastrar um usuário com sucesso" )

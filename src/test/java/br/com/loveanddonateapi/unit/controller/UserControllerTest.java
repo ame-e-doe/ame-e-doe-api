@@ -35,6 +35,8 @@ public class UserControllerTest extends MapperUtils {
     private static final String PATH = "/api";
     private static final String BASE_URL = "/user";
 
+    private static final String PATH_REGISTER = "/register";
+
     @Autowired
     MockMvc mockMvc;
 
@@ -53,7 +55,7 @@ public class UserControllerTest extends MapperUtils {
                         .email( userDTO.getEmail() )
                         .build() );
 
-        mockMvc.perform( post( PATH + BASE_URL )
+        mockMvc.perform( post( PATH + BASE_URL + PATH_REGISTER )
                         .contentType( MediaType.APPLICATION_JSON )
                         .content( objectToJson( userDTO ) ) )
                 .andExpect( status().isCreated() )
@@ -67,7 +69,7 @@ public class UserControllerTest extends MapperUtils {
 
         String json = new ObjectMapper().writeValueAsString( new UserDTO() );
 
-        mockMvc.perform( post( PATH + BASE_URL )
+        mockMvc.perform( post( PATH + BASE_URL + PATH_REGISTER )
                         .contentType( MediaType.APPLICATION_JSON )
                         .content( json ) )
                 .andExpect( status().isBadRequest() )
@@ -86,7 +88,7 @@ public class UserControllerTest extends MapperUtils {
 
         String json = new ObjectMapper().writeValueAsString( userDTO );
 
-        mockMvc.perform( post( PATH + BASE_URL )
+        mockMvc.perform( post( PATH + BASE_URL  + PATH_REGISTER )
                         .contentType( MediaType.APPLICATION_JSON )
                         .content( json ) )
                 .andExpect( status().isBadRequest() )
@@ -105,7 +107,7 @@ public class UserControllerTest extends MapperUtils {
 
         String json = new ObjectMapper().writeValueAsString( userDTO );
 
-        mockMvc.perform( post( PATH + BASE_URL )
+        mockMvc.perform( post( PATH + BASE_URL + PATH_REGISTER )
                         .contentType( MediaType.APPLICATION_JSON )
                         .content( json ) )
                 .andExpect( status().isBadRequest() )
