@@ -1,13 +1,12 @@
 package br.com.loveanddonateapi.service;
 
-import br.com.loveanddonateapi.configuration.jwt.JwtUtils;
-import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Cart;
 import br.com.loveanddonateapi.models.CartItem;
 import br.com.loveanddonateapi.models.DigitalProduct;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.CartItemRepository;
 import br.com.loveanddonateapi.repository.CartRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class CartService {
 
-//    TODO: Ajustar servicos, esta lancando erro de dependencia circular
-//    @Autowired
-//    JwtUtils jwtUtils;
-//
-//    @Autowired
-//    UserService userService;
-
-    @Autowired
     DigitalProductService productService;
 
-    @Autowired
     CartRepository cartRepository;
 
-    @Autowired
     CartItemRepository cartItemRepository;
 
     public Cart addCartItem(String token, Long productId) {
@@ -87,6 +77,7 @@ public class CartService {
     }
 
     public Cart getCartByUser(String token) {
+//    TODO: Ajustar servicos, esta lancando erro de dependencia circular
 //        Long userId = Long.parseLong(jwtUtils.getUserFromJwtToken(token));
 //        User user = userService.getById(userId);
 //        return cartRepository.getCartsByUserId(user.getId())
