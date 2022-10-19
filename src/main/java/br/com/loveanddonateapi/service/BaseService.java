@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface BaseService<Dto> {
 
-    Dto create(Dto dto, String token);
+    Dto create( Dto dto, String email );
 
     Dto getById(Long id);
 
