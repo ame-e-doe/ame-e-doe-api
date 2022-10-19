@@ -14,14 +14,14 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/images/")
+@RequestMapping("/api/images")
 @Api(tags = {"Imagens"})
 public class ImageController {
 
     @Autowired
     ImageService imageService;
 
-    @GetMapping("list")
+    @GetMapping("/list")
     @ApiOperation(value = "Lista todas as imagens")
     public ResponseEntity<List<Image>> list() {
         return ResponseEntity.ok(imageService.getAll());
@@ -29,13 +29,13 @@ public class ImageController {
 
     @Deprecated
     @ApiOperation(value = "Upload de uma imagem - PARA CONSUMIR ESTE ENDPOINT O IDEAL É USAR O POSTMAN, POIS NELE É POSSIVEL SELECIONAR UMA IMAGEM PELO EXPLORADOR DE ARQUIVOS DA SUA MÁQUINA.")
-    @PostMapping("upload")
+    @PostMapping("/upload")
     public ResponseEntity<Image> upload(@RequestParam MultipartFile image) {
         return new ResponseEntity<>(this.imageService.save(image), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Deleta uma imagem pelo identificador")
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@RequestParam Long id) {
         this.imageService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

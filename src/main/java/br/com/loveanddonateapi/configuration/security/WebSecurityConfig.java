@@ -1,9 +1,9 @@
-package br.com.loveanddonateapi.configuration;
+package br.com.loveanddonateapi.configuration.security;
 
+import br.com.loveanddonateapi.configuration.jwt.AuthEntryPointJwt;
+import br.com.loveanddonateapi.configuration.jwt.AuthTokenFilter;
 import br.com.loveanddonateapi.service.UserService;
-import br.com.loveanddonateapi.security.jwt.AuthEntryPointJwt;
-import br.com.loveanddonateapi.security.jwt.AuthTokenFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,20 +12,20 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 @Configuration
+@AllArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity( prePostEnabled = true )
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     UserService userDetailsService;
 
-    @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
@@ -51,9 +51,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure( HttpSecurity http ) throws Exception {
-        http.cors().and().csrf().disable();
-        http.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
-        http.authorizeHttpRequests((auth) -> auth.anyRequest().permitAll());
+        http
+                .cors()
+                .and()
+                .csrf().disable();
+
+        http.exceptionHandling().authenticationEntryPoint( unauthorizedHandler );
+        http.sessionManagement().sessionCreationPolicy( STATELESS );
+        http.authorizeRequests().antMatchers( "/api/user/register", "/api/auth/login", "/api/products/**", "/api/category/**", "/api/images/**" ).permitAll();
+
+//        Endpoint de test
+        http.authorizeRequests().antMatchers( "/api/test/all" ).permitAll();
+
+        http.authorizeRequests().antMatchers().hasAnyAuthority( "ROLE_USER" );
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore( authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class );
     }
 

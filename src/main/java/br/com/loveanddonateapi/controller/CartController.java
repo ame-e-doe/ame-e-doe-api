@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping(path = "/api/cart/")
+@RequestMapping(path = "/api/cart")
 @Api(tags = {"Carrinho de compras"})
 public class CartController {
 
@@ -19,11 +19,12 @@ public class CartController {
     private CartService cartService;
 
     @ApiOperation(value = "Adiciona um produto ao carrinho de compras.")
-    @PostMapping("add-product/{productId}")
+    @PostMapping("/add-product/{productId}")
     public ResponseEntity<Cart> addCartItem(@RequestHeader("Authorization") String token, @PathVariable Long productId) {
         return new ResponseEntity<>(this.cartService.addCartItem(token, productId), HttpStatus.CREATED);
     }
 
+//    TODO: Aqui vai receber o ID USER e recuperar compras do user logado
     @ApiOperation(value = "Recupera o carrinho de compras do usuario logado.")
     @GetMapping()
     public ResponseEntity<Cart> getCartByUser(@RequestHeader("Authorization") String token) {
@@ -31,7 +32,7 @@ public class CartController {
     }
 
     @ApiOperation(value = "Remove um item do carrinho de compras.")
-    @DeleteMapping("{cartItemId}")
+    @DeleteMapping("/{cartItemId}")
     public ResponseEntity<Cart> removeCartItem(@RequestHeader("Authorization") String token, @PathVariable Long cartItemId) {
         return new ResponseEntity<>(this.cartService.removeCartItem(token, cartItemId), HttpStatus.NO_CONTENT);
     }

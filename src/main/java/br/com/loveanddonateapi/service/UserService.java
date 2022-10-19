@@ -11,6 +11,7 @@ import br.com.loveanddonateapi.models.enums.ERole;
 import br.com.loveanddonateapi.repository.RoleRepository;
 import br.com.loveanddonateapi.repository.UserRepository;
 import br.com.loveanddonateapi.utils.EmailUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,17 +23,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Transactional
+@AllArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
     UserRepository userRepository;
 
-    @Autowired
     RoleRepository roleRepository;
 
-    @Autowired
     ConfirmationTokenService confirmationTokenService;
+
+    CartService cartService;
 
     public Email registerUser( User user ) {
 
@@ -48,10 +50,19 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
-    private void createUser( User user ) {
-        user.setPassword( UserMapper.encrypt().encode( user.getPassword() ) );
+    protected void createUser( User user ) {
+
+        user.setPassword( UserMapper
+                .encrypt()
+                .encode(
+                        user.getPassword() ) );
+
         user.setRoles( generateRole( null ) );
-        userRepository.save( user );
+
+        User userSaved = userRepository.save( user );
+
+        cartService.createCart( userSaved );
+
     }
 
     private List<Role> generateRole( String role ) {

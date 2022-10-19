@@ -12,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/products/")
+@RequestMapping("/api/products")
 @Api(tags = {"Produtos"})
 public class DigitalProductController {
 
@@ -20,25 +20,25 @@ public class DigitalProductController {
     private DigitalProductService digitalProductService;
 
     @ApiOperation(value = "Lista todos os produtos")
-    @GetMapping("list")
+    @GetMapping("/list")
     public ResponseEntity<List<DigitalProductResponseDTO>> getAllProducts() {
         return ResponseEntity.ok(digitalProductService.getAll());
     }
 
     @ApiOperation(value = "Consulta produto pelo identificador")
-    @GetMapping("{idProduct}")
+    @GetMapping("/{idProduct}")
     public ResponseEntity<DigitalProductResponseDTO> getProductById(@PathVariable Long idProduct) {
         return ResponseEntity.ok(digitalProductService.getById(idProduct));
     }
 
     @ApiOperation(value = "Consulta produto pelo identificador da categoria")
-    @GetMapping("list/category/{idCategory}")
+    @GetMapping("/list/category/{idCategory}")
     public ResponseEntity<List<DigitalProductResponseDTO>> getAllProductsByCategory(@PathVariable Long idCategory) {
         return ResponseEntity.ok(digitalProductService.getAllProductsByCategory(idCategory));
     }
 
     @ApiOperation(value = "Lista produtos pela busca")
-    @GetMapping("list/search")
+    @GetMapping("/list/search")
     public ResponseEntity<List<DigitalProductResponseDTO>> getAllProductsBySearch(@RequestParam String text) {
         return ResponseEntity.ok(digitalProductService.getAllProductsBySearch(text));
     }

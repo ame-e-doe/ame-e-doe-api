@@ -28,14 +28,6 @@ public class Role implements GrantedAuthority {
     @Column( name = "role_description", length = 20 )
     private String name;
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName( String name ) {
-        this.name = name;
-    }
-
     @Override
     public String getAuthority() {
         return this.name;

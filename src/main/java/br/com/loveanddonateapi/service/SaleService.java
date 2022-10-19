@@ -6,7 +6,7 @@ import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Sale;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.SaleRepository;
-import br.com.loveanddonateapi.security.jwt.JwtUtils;
+import br.com.loveanddonateapi.configuration.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class SaleService implements BaseService<SaleResponseDTO> {
     }
 
     @Override
-    public SaleResponseDTO create(SaleResponseDTO saleResponseDto, String token) {
+    public SaleResponseDTO create( SaleResponseDTO saleResponseDto, String email ) {
         return null;
     }
 

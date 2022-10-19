@@ -1,13 +1,12 @@
 package br.com.loveanddonateapi.service;
 
-import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Cart;
 import br.com.loveanddonateapi.models.CartItem;
 import br.com.loveanddonateapi.models.DigitalProduct;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.CartItemRepository;
 import br.com.loveanddonateapi.repository.CartRepository;
-import br.com.loveanddonateapi.security.jwt.JwtUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,21 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class CartService {
 
-    @Autowired
-    JwtUtils jwtUtils;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
     DigitalProductService productService;
 
-    @Autowired
     CartRepository cartRepository;
 
-    @Autowired
     CartItemRepository cartItemRepository;
 
     public Cart addCartItem(String token, Long productId) {
@@ -86,13 +77,15 @@ public class CartService {
     }
 
     public Cart getCartByUser(String token) {
-        Long userId = Long.parseLong(jwtUtils.getUserFromJwtToken(token));
-        User user = userService.getById(userId);
-        return cartRepository.getCartByUserId(user.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Carrinho do usuario não encontrado."));
+//    TODO: Ajustar servicos, esta lancando erro de dependencia circular
+//        Long userId = Long.parseLong(jwtUtils.getUserFromJwtToken(token));
+//        User user = userService.getById(userId);
+//        return cartRepository.getCartsByUserId(user.getId())
+//                .orElseThrow(() -> new EntityNotFoundException("Carrinho do usuario não encontrado."));
+        return null;
     }
 
-    public void createCart(User user) {
-        cartRepository.save(new Cart(null, user, null, 0.0));
+    public void createCart( User user ) {
+        cartRepository.save( new Cart( user ) );
     }
 }

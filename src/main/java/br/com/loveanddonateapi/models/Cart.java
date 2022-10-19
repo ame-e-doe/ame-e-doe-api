@@ -18,13 +18,14 @@ import java.util.List;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_CART", nullable = false)
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "USER_ID")
     @JsonIgnore
+    @OneToOne
+    @JoinColumn(
+            nullable = false,
+            name = "id_user")
     private User user;
 
     @OneToMany(mappedBy = "cart")
@@ -32,5 +33,11 @@ public class Cart {
 
     @Column(name = "VALOR_TOTAL_CART")
     private Double totalPrice;
+
+    public Cart( User user ) {
+        this.user = user;
+        this.totalPrice = 0d;
+
+    }
 
 }

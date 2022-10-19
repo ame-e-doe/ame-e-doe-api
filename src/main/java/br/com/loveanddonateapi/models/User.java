@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.List;
@@ -41,13 +39,10 @@ public class User implements UserDetails {
     private String lastName;
 
     @NotBlank
-    @Email
-    @Column( name = "email" )
     private String email;
 
     @NotBlank
     private String password;
-
     private Boolean locked = false;
     private Boolean enabled = false;
 
