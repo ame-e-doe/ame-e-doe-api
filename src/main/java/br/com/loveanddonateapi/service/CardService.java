@@ -6,56 +6,51 @@ import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Card;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.CardRepository;
-import br.com.loveanddonateapi.configuration.jwt.JwtUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import br.com.loveanddonateapi.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
-public class CardService implements BaseService<CardDTO> {
+public class CardService{
 
-    @Autowired
+    UserRepository userRepository;
+
     CardRepository cardRepository;
 
-    @Autowired
     UserService userService;
 
-    @Autowired
-    JwtUtils jwtUtils;
-
-    @Override
-    public CardDTO create(CardDTO cardDTO, String token) {
-        Long userId = Long.parseLong(jwtUtils.getUserFromJwtToken(token));
-        cardExist(cardDTO.getCardNumber(), userId);
-        Card card = cardDTO.asEntity(cardDTO);
-        User user = userService.getById(userId);
-        card.setUser(user);
-        return new CardDTO(cardRepository.save(card));
+    public CardDTO save( Card card, String email ) {
+        Optional< User > user = userRepository.findByEmail( email );
+        cardExist( card.getCardNumber(), user.get().getId() );
+        card.setUser( user.get() );
+        return new CardDTO( cardRepository.save( card ) );
     }
 
-    @Override
-    public CardDTO getById(Long id) {
-        return cardRepository.findById(id).map(card -> new CardDTO(card))
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Cartão com identificador [%d] não encontrado.", id)));
+    public CardDTO getById( Long id ) {
+        return cardRepository.findById( id ).map( card -> new CardDTO( card ) )
+                .orElseThrow( () -> new EntityNotFoundException( String.format( "Cartão com identificador [%d] não encontrado.", id ) ) );
     }
 
-    @Override
-    public List<CardDTO> getAll(String token) {
-        return cardRepository.findAll().stream().map(card -> new CardDTO(card)).collect(Collectors.toList());
+    public List< CardDTO > getAll( String email ) {
+        Optional< User > user = userRepository.findByEmail( email );
+        return cardRepository.findCardsByUserId( user.get().getId() ).stream()
+                .map( card -> new CardDTO( card ) ).collect( Collectors.toList() );
     }
 
-    @Override
-    public void delete(Long id) {
-        Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Cartão com identificador [%d] não encontrado.", id)));
-        cardRepository.delete(card);
+    public void delete( Long id ) {
+        Card card = cardRepository.findById( id )
+                .orElseThrow( () -> new EntityNotFoundException( String.format( "Cartão com identificador [%d] não encontrado.", id ) ) );
+        cardRepository.delete( card );
     }
 
-    private void cardExist(String cardNumber, Long user) {
-        if (cardRepository.findCardByCardNumberAndUser(cardNumber, user).isPresent()) {
-            throw new EntityExistValidateException("Cartão já cadastrado.");
+    private void cardExist( String cardNumber, Long idUser ) {
+        if( cardRepository.findCardByCardNumberAndUser( cardNumber, idUser ).isPresent() ) {
+            throw new EntityExistValidateException( "Cartão já cadastrado." );
         }
     }
 }

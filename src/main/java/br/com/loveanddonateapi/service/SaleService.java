@@ -31,7 +31,7 @@ public class SaleService implements BaseService<SaleResponseDTO> {
     }
 
     @Override
-    public SaleResponseDTO create(SaleResponseDTO saleResponseDto, String token) {
+    public SaleResponseDTO create( SaleResponseDTO saleResponseDto, String email ) {
         return null;
     }
 

@@ -32,15 +32,15 @@ public class CardDTO implements Serializable {
     @NotBlank(message = "{required.field}")
     private String expirationDate;
 
-    public CardDTO(Card entity) {
-        this.setId(entity.getId());
-        this.setCardNumber(entity.getCardNumber());
-        this.setSecurityCode(entity.getSecurityCode());
-        this.setPrintedName(entity.getPrintedName());
-        this.setExpirationDate(entity.getExpirationDate());
+    public CardDTO( Card card ) {
+        this.setId( card.getId() );
+        this.setCardNumber( card.getCardNumber() );
+        this.setSecurityCode( card.getSecurityCode() );
+        this.setPrintedName( card.getPrintedName() );
+        this.setExpirationDate( card.getExpirationDate() );
     }
 
-    public Card asEntity(CardDTO dto) {
+    public static Card asEntity(CardDTO dto) {
         Card card = new Card();
         card.setCardNumber(dto.getCardNumber());
         card.setSecurityCode(dto.getSecurityCode());
