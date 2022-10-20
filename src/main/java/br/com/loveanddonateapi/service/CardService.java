@@ -24,6 +24,8 @@ public class CardService{
 
     UserService userService;
 
+//    TODO: Criar regra para validar data de expiracao
+//    TODO: Criar regra para validar card number
     public CardDTO save( Card card, String email ) {
         Optional< User > user = userRepository.findByEmail( email );
         cardExist( card.getCardNumber(), user.get().getId() );
