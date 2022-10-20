@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @NotBlank
-    private String email;
+    private String username;
 
     @NotBlank
     private String password;
@@ -72,7 +72,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.username;
     }
 
     @Override

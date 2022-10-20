@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -27,9 +26,9 @@ public class CardService{
 //    TODO: Criar regra para validar data de expiracao
 //    TODO: Criar regra para validar card number
     public CardDTO save( Card card, String email ) {
-        Optional< User > user = userRepository.findByEmail( email );
-        cardExist( card.getCardNumber(), user.get().getId() );
-        card.setUser( user.get() );
+        User user = userRepository.findByUsername( email );
+        cardExist( card.getCardNumber(), user.getId() );
+        card.setUser( user );
         return new CardDTO( cardRepository.save( card ) );
     }
 
@@ -39,8 +38,8 @@ public class CardService{
     }
 
     public List< CardDTO > getAll( String email ) {
-        Optional< User > user = userRepository.findByEmail( email );
-        return cardRepository.findCardsByUserId( user.get().getId() ).stream()
+        User user = userRepository.findByUsername( email );
+        return cardRepository.findCardsByUserId( user.getId() ).stream()
                 .map( card -> new CardDTO( card ) ).collect( Collectors.toList() );
     }
 

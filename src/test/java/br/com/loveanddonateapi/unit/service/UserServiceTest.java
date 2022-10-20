@@ -2,12 +2,10 @@ package br.com.loveanddonateapi.unit.service;
 
 import br.com.loveanddonateapi.models.Role;
 import br.com.loveanddonateapi.models.User;
-import br.com.loveanddonateapi.models.email.Email;
 import br.com.loveanddonateapi.models.enums.ERole;
 import br.com.loveanddonateapi.repository.RoleRepository;
 import br.com.loveanddonateapi.repository.UserRepository;
 import br.com.loveanddonateapi.service.CartService;
-import br.com.loveanddonateapi.service.ConfirmationTokenService;
 import br.com.loveanddonateapi.service.UserService;
 import br.com.loveanddonateapi.utils.EmailUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -37,9 +34,6 @@ public class UserServiceTest {
     RoleRepository roleRepository;
 
     @MockBean
-    ConfirmationTokenService confirmationTokenService;
-
-    @MockBean
     CartService cartService;
 
     @Test
@@ -48,25 +42,22 @@ public class UserServiceTest {
 
         User user = createValidUser();
 
-        doNothing().when( confirmationTokenService ).saveConfirmationToken( user );
-
         when( roleRepository.findByName( ERole.ROLE_USER.name() ) ).thenReturn( Optional.ofNullable( gerenateRole() ) );
 
         when( userRepository.save( user ) ).thenReturn( User.builder()
                         .id( 1L )
                         .firstName( "Teste" )
                         .lastName( "do Teste" )
-                        .email( "teste@teste.com" )
+                        .username( "teste@teste.com" )
                         .password( "Teste@123" )
                         .enabled( false )
                         .locked( true )
                         .roles( null )
                         .build() );
 
-        Email emailUserRegistered = userService.registerUser( user );
+        String email = userService.registerUser( user );
 
-        assertThat( emailUserRegistered.getEmail() ).isNotEmpty();
-        assertThat( emailUserRegistered.getEmail() ).isEqualTo( EmailUtils.formatterEmail( user.getEmail() ) );
+        assertThat( email ).isEqualTo( EmailUtils.formatterEmail( user.getUsername() ) );
 
     }
 
@@ -81,12 +72,13 @@ public class UserServiceTest {
         return User.builder()
                 .firstName( "Teste" )
                 .lastName( "do Teste" )
-                .email( "teste@teste.com" )
+                .username( "teste@teste.com" )
                 .password( "Teste@123" )
                 .enabled( false )
                 .locked( true )
                 .roles( null )
                 .build();
+
     }
 
 }

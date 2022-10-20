@@ -2,7 +2,6 @@ package br.com.loveanddonateapi.unit.controller;
 
 import br.com.loveanddonateapi.dto.user.UserDTO;
 import br.com.loveanddonateapi.models.User;
-import br.com.loveanddonateapi.models.email.Email;
 import br.com.loveanddonateapi.service.UserService;
 import br.com.loveanddonateapi.unit.utils.MapperUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,10 +49,7 @@ public class UserControllerTest extends MapperUtils {
         UserDTO userDTO = createValidUser();
 
         BDDMockito.given( userService.registerUser( any( User.class ) ) )
-                .willReturn( Email
-                        .builder()
-                        .email( userDTO.getEmail() )
-                        .build() );
+                .willReturn( userDTO.getEmail() );
 
         mockMvc.perform( post( PATH + BASE_URL + PATH_REGISTER )
                         .contentType( MediaType.APPLICATION_JSON )
