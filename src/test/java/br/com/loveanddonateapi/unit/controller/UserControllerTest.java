@@ -55,7 +55,7 @@ public class UserControllerTest extends MapperUtils {
                         .contentType( MediaType.APPLICATION_JSON )
                         .content( objectToJson( userDTO ) ) )
                 .andExpect( status().isCreated() )
-                .andExpect( jsonPath( "message.email" ).value( userDTO.getEmail() ) );
+                .andExpect( jsonPath( "message" ).value( userDTO.getEmail() ) );
 
     }
 
