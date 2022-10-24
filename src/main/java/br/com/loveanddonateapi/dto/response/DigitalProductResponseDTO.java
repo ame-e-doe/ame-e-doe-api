@@ -1,4 +1,4 @@
-package br.com.loveanddonateapi.dto;
+package br.com.loveanddonateapi.dto.response;
 
 import br.com.loveanddonateapi.models.Category;
 import br.com.loveanddonateapi.models.DigitalProduct;
