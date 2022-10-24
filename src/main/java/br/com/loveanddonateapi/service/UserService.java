@@ -1,6 +1,5 @@
 package br.com.loveanddonateapi.service;
 
-import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.exception.user.RoleNotFoundException;
 import br.com.loveanddonateapi.exception.user.UserExistsException;
 import br.com.loveanddonateapi.mapper.UserMapper;
@@ -61,8 +60,8 @@ public class UserService implements UserDetailsService {
 
     }
 
-    private List<Role> generateRole( String role ) {
-        List<Role> roles = new ArrayList<>();
+    private List< Role > generateRole( String role ) {
+        List< Role > roles = new ArrayList<>();
 
         if( Objects.isNull( role ) ) {
             log.info( "add role a new user" );
@@ -77,19 +76,16 @@ public class UserService implements UserDetailsService {
         var user = userRepository.findByUsername( email );
 
         if( Objects.isNull( user ) ) {
+            log.error( "User not found: " );
             throw new UsernameNotFoundException( "Usuário não encontrado para o email: " + email );
         }
+        log.info( "User found by email: {}", email );
         return user;
     }
 
-    public User getUser( String username ) {
-        log.info( "localize user {} by username", username );
-       return userRepository.findByUsername( username );
-    }
-
-    public User getById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado."));
+    public User getById( Long id ) {
+        log.info( "localize user {} by id", id );
+        return userRepository.getById( id );
     }
 
     public void saveRole( Role role ) {

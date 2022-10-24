@@ -50,8 +50,6 @@ public class UserServiceTest {
                         .lastName( "do Teste" )
                         .username( "teste@teste.com" )
                         .password( "Teste@123" )
-                        .enabled( false )
-                        .locked( true )
                         .roles( null )
                         .build() );
 
@@ -74,8 +72,6 @@ public class UserServiceTest {
                 .lastName( "do Teste" )
                 .username( "teste@teste.com" )
                 .password( "Teste@123" )
-                .enabled( false )
-                .locked( true )
                 .roles( null )
                 .build();
 

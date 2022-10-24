@@ -17,8 +17,6 @@ public class UserMapper {
                 .lastName( userDTO.getLastName() )
                 .password( userDTO.getPassword() )
                 .username( userDTO.getEmail() )
-                .locked( false )
-                .enabled( true )
                 .build();
     }
 
