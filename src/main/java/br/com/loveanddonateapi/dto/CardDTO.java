@@ -1,5 +1,6 @@
 package br.com.loveanddonateapi.dto;
 
+import br.com.loveanddonateapi.mapper.CardMapper;
 import br.com.loveanddonateapi.models.Card;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,8 @@ public class CardDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Long id;
+
     @NotBlank(message = "{required.field}")
     private String cardNumber;
 
@@ -32,18 +35,7 @@ public class CardDTO implements Serializable {
     private String expirationDate;
 
     public CardDTO( Card card ) {
-        this.setCardNumber( card.getCardNumber() );
-        this.setSecurityCode( card.getSecurityCode() );
-        this.setPrintedName( card.getPrintedName() );
-        this.setExpirationDate( card.getExpirationDate() );
+        CardMapper.cardEntityToCardDTO( card );
     }
 
-    public static Card asEntity( CardDTO dto ) {
-        Card card = new Card();
-        card.setCardNumber( dto.getCardNumber() );
-        card.setSecurityCode( dto.getSecurityCode() );
-        card.setPrintedName( dto.getPrintedName() );
-        card.setExpirationDate( dto.getExpirationDate() );
-        return card;
-    }
 }
