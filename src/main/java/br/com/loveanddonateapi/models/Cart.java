@@ -2,19 +2,25 @@ package br.com.loveanddonateapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "CART")
+@Table( name = "CART" )
 public class Cart {
 
     @Id
@@ -25,13 +31,13 @@ public class Cart {
     @OneToOne
     @JoinColumn(
             nullable = false,
-            name = "id_user")
+            name = "id_user" )
     private User user;
 
-    @OneToMany(mappedBy = "cart")
-    private List<CartItem> cartItem;
+    @OneToMany( mappedBy = "cart" )
+    private List< CartItem > listCartItens;
 
-    @Column(name = "VALOR_TOTAL_CART")
+    @Column( name = "VALOR_TOTAL_CART" )
     private Double totalPrice;
 
     public Cart( User user ) {
