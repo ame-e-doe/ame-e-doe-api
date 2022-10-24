@@ -6,7 +6,7 @@ import br.com.loveanddonateapi.dto.response.MessageResponse;
 import br.com.loveanddonateapi.dto.user.SignInDTO;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,12 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SignInService {
 
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     private final UserRepository userRepository;
 
@@ -32,6 +32,7 @@ public class SignInService {
         log.info( "Validate user is enabled and exists in database {}", signInDTO.getEmail() );
 
         if( !userRepository.existsByUsername( signInDTO.getEmail() ) ) {
+            log.error( "user not found by email {}", signInDTO.getEmail() );
             return ResponseEntity
                     .status( HttpStatus.UNAUTHORIZED )
                     .body( new MessageResponse( "O usuário não existe!" ) );
@@ -40,7 +41,7 @@ public class SignInService {
     }
 
     private ResponseEntity< ? > authenticated( SignInDTO signInDTO ) {
-        log.debug( "Authenticate user {}", signInDTO.getEmail() );
+        log.info( "Authenticate user {}", signInDTO.getEmail() );
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken( signInDTO.getEmail(), signInDTO.getPassword() ) );
         SecurityContextHolder.getContext().setAuthentication( authentication );
@@ -48,7 +49,9 @@ public class SignInService {
 
         User user = ( User ) authentication.getPrincipal();
         return ResponseEntity.ok( new JwtResponse( jwt,
-                user.getUsername()
+                user.getFirstName(),
+                user.getUsername(),
+                user.getId()
         ) );
     }
 

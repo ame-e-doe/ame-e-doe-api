@@ -1,4 +1,4 @@
-package br.com.loveanddonateapi.dto;
+package br.com.loveanddonateapi.dto.response;
 
 import br.com.loveanddonateapi.models.Sale;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class SaleResponseDTO {
 
     private double value;
 
-    private Set<DigitalProductResponseDTO> products = new HashSet<>();
+    private Set< DigitalProductResponseDTO > products = new HashSet<>();
 
     public SaleResponseDTO(Sale entity) {
         this.setId(entity.getId());
