@@ -4,7 +4,7 @@ import br.com.loveanddonateapi.models.Image;
 import br.com.loveanddonateapi.service.ImageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +14,12 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/images")
 @Api(tags = {"Imagens"})
 public class ImageController {
 
-    @Autowired
-    ImageService imageService;
+    private final ImageService imageService;
 
     @GetMapping("/list")
     @ApiOperation(value = "Lista todas as imagens")

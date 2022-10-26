@@ -1,7 +1,7 @@
 package br.com.loveanddonateapi.controller;
 
 import br.com.loveanddonateapi.dto.SaleCreateDTO;
-import br.com.loveanddonateapi.dto.SaleResponseDTO;
+import br.com.loveanddonateapi.dto.response.SaleResponseDTO;
 import br.com.loveanddonateapi.service.SaleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

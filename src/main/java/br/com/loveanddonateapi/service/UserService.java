@@ -1,18 +1,16 @@
 package br.com.loveanddonateapi.service;
 
-import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.exception.user.RoleNotFoundException;
 import br.com.loveanddonateapi.exception.user.UserExistsException;
 import br.com.loveanddonateapi.mapper.UserMapper;
 import br.com.loveanddonateapi.models.Role;
 import br.com.loveanddonateapi.models.User;
-import br.com.loveanddonateapi.models.email.Email;
 import br.com.loveanddonateapi.models.enums.ERole;
 import br.com.loveanddonateapi.repository.RoleRepository;
 import br.com.loveanddonateapi.repository.UserRepository;
 import br.com.loveanddonateapi.utils.EmailUtils;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,35 +21,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    ConfirmationTokenService confirmationTokenService;
+    private final CartService cartService;
 
-    CartService cartService;
+    public String registerUser( User user ) {
 
-    public Email registerUser( User user ) {
-
-        if( userRepository.existsByEmail( user.getEmail() ) ) {
+        log.info( "saving new user {} ", user.getUsername() );
+        if( userRepository.existsByUsername( user.getUsername() ) ) {
             throw new UserExistsException( "Usuário já registrado" );
         }
         createUser( user );
-        confirmationTokenService
-                .saveConfirmationToken( user );
 
-        return Email.builder()
-                .email( EmailUtils.formatterEmail( user.getEmail() ) )
-                .build();
+        return EmailUtils.formatterEmail( user.getUsername() );
     }
 
     protected void createUser( User user ) {
 
+        log.info( "generate info for user {} and props", user.getUsername() );
         user.setPassword( UserMapper
                 .encrypt()
                 .encode(
@@ -65,10 +60,11 @@ public class UserService implements UserDetailsService {
 
     }
 
-    private List<Role> generateRole( String role ) {
-        List<Role> roles = new ArrayList<>();
+    private List< Role > generateRole( String role ) {
+        List< Role > roles = new ArrayList<>();
 
         if( Objects.isNull( role ) ) {
+            log.info( "add role a new user" );
             Role userRole = roleRepository.findByName( ERole.ROLE_USER.name() )
                     .orElseThrow( () -> new RoleNotFoundException( "Role não encontrada" ) );
             roles.add( userRole );
@@ -76,20 +72,24 @@ public class UserService implements UserDetailsService {
         return roles;
     }
 
-    @Transactional
     public UserDetails loadUserByUsername( String email ) throws UsernameNotFoundException {
-        var user = userRepository.findByEmail( email )
-                .orElseThrow( () -> new UsernameNotFoundException( "User not found with email: " + email ) );
+        var user = userRepository.findByUsername( email );
 
+        if( Objects.isNull( user ) ) {
+            log.error( "User not found: " );
+            throw new UsernameNotFoundException( "Usuário não encontrado para o email: " + email );
+        }
+        log.info( "User found by email: {}", email );
         return user;
     }
 
-    public int enableUser( String email ) {
-        return userRepository.enableUser( email );
+    public User getById( Long id ) {
+        log.info( "localize user {} by id", id );
+        return userRepository.getById( id );
     }
 
-    public User getById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario não encontrado."));
+    public void saveRole( Role role ) {
+        roleRepository.save( role );
     }
+
 }

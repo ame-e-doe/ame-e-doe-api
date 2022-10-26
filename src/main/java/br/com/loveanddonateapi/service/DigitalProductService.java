@@ -1,6 +1,6 @@
 package br.com.loveanddonateapi.service;
 
-import br.com.loveanddonateapi.dto.DigitalProductResponseDTO;
+import br.com.loveanddonateapi.dto.response.DigitalProductResponseDTO;
 import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Category;
 import br.com.loveanddonateapi.models.DigitalProduct;

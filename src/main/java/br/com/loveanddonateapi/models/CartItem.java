@@ -6,11 +6,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Table(name = "CART_ITEM")
 public class CartItem {
 

@@ -1,7 +1,7 @@
 package br.com.loveanddonateapi.service;
 
 import br.com.loveanddonateapi.dto.SaleCreateDTO;
-import br.com.loveanddonateapi.dto.SaleResponseDTO;
+import br.com.loveanddonateapi.dto.response.SaleResponseDTO;
 import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Sale;
 import br.com.loveanddonateapi.models.User;
@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class SaleService implements BaseService<SaleResponseDTO> {
+
+//    TODO: Refactor do Service de SALE
+
     @Autowired
     private SaleRepository saleRepository;
     @Autowired

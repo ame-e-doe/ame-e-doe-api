@@ -2,15 +2,15 @@ package br.com.loveanddonateapi.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
-@ToString
-@Getter
+@Data
+@Builder
 @JsonInclude( JsonInclude.Include.NON_NULL )
 public class SignInDTO {
 

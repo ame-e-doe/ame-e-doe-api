@@ -36,6 +36,4 @@ public class UserDTO {
     @NotBlank( message = "{required.field}")
     private String password;
 
-    private String role;
-
 }

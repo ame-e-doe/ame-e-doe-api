@@ -1,8 +1,11 @@
 package br.com.loveanddonateapi;
 
+import br.com.loveanddonateapi.models.Role;
+import br.com.loveanddonateapi.service.UserService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +32,15 @@ public class LoveAndDonateApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(LoveAndDonateApiApplication.class, args);
     }
+
+	@Bean
+	CommandLineRunner runner( UserService userService ) {
+		return args -> {
+			userService.saveRole( new Role( null, "ROLE_USER") );
+			userService.saveRole( new Role( null, "ROLE_ADMIN") );
+			userService.saveRole( new Role( null, "ROLE_MOD") );
+		};
+	}
 
 	@Bean
 	public Docket docket(){

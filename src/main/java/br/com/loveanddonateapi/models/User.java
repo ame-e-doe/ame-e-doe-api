@@ -39,22 +39,16 @@ public class User implements UserDetails {
     private String lastName;
 
     @NotBlank
-    private String email;
+    private String username;
 
     @NotBlank
     private String password;
-    private Boolean locked = false;
-    private Boolean enabled = false;
 
     @ManyToMany( fetch = FetchType.EAGER )
     @JoinTable( name = "user_roles",
                 joinColumns = @JoinColumn( name = "id_user" ),
                 inverseJoinColumns = @JoinColumn( name = "id_role" ) )
     private List<Role> roles;
-
-    public List< Role > getRoles() {
-        return this.roles;
-    }
 
     public void setRoles( List<Role> roles ) {
         this.roles = roles;
@@ -72,7 +66,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.username;
     }
 
     @Override
@@ -82,7 +76,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        return true;
     }
 
     @Override
@@ -92,7 +86,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 
 }
