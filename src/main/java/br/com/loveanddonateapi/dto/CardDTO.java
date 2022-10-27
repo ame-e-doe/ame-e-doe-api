@@ -12,10 +12,10 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CardDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,7 +35,11 @@ public class CardDTO implements Serializable {
     private String expirationDate;
 
     public CardDTO( Card card ) {
-        CardMapper.cardEntityToCardDTO( card );
+        this.id = card.getId();
+        this.cardNumber = card.getCardNumber();
+        this.securityCode = card.getSecurityCode();
+        this.printedName = card.getPrintedName();
+        this.expirationDate = card.getExpirationDate();
     }
 
 }
