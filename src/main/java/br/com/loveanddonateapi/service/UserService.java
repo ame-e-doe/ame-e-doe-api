@@ -1,5 +1,6 @@
 package br.com.loveanddonateapi.service;
 
+import br.com.loveanddonateapi.dto.user.UpdateUserDTO;
 import br.com.loveanddonateapi.exception.user.RoleNotFoundException;
 import br.com.loveanddonateapi.exception.user.UserExistsException;
 import br.com.loveanddonateapi.mapper.UserMapper;
@@ -11,6 +12,9 @@ import br.com.loveanddonateapi.repository.UserRepository;
 import br.com.loveanddonateapi.utils.EmailUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,8 +27,8 @@ import java.util.Objects;
 
 @Slf4j
 @Transactional
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -57,6 +61,39 @@ public class UserService implements UserDetailsService {
         User userSaved = userRepository.save( user );
 
         cartService.createCart( userSaved );
+
+    }
+
+    public UpdateUserDTO updateUser( Long id, UpdateUserDTO updateUserDTO ) {
+        log.info( "get user by id {} in database", id );
+        User user = userRepository.getById( id );
+
+        if( !Objects.isNull( user ) || !ObjectUtils.isEmpty( user ) ) {
+            user.setFirstName( updateUserDTO.getFirstName() );
+            user.setLastName( updateUserDTO.getLastName() );
+        } else {
+            throw new UserExistsException( "Usuário não encontrado" );
+        }
+
+        log.info( "update user in database {}", user.getUsername() );
+        User userUpdated = userRepository.save( user );
+
+        return UpdateUserDTO.builder()
+                .firstName( userUpdated.getFirstName() )
+                .lastName( userUpdated.getLastName() )
+                .build();
+    }
+
+    public ResponseEntity< ? > deleteUser( Long id ) {
+        User user = userRepository.getById( id );
+
+        if( !Objects.isNull( user ) || !ObjectUtils.isEmpty( user ) ) {
+            userRepository.delete( user );
+        } else {
+            throw new UserExistsException( "Usuário não encontrado" );
+        }
+
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT );
 
     }
 
