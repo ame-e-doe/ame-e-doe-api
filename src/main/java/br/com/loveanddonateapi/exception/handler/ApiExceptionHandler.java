@@ -1,6 +1,11 @@
 package br.com.loveanddonateapi.exception.handler;
 
-import br.com.loveanddonateapi.exception.*;
+import br.com.loveanddonateapi.exception.EntityExistValidateException;
+import br.com.loveanddonateapi.exception.EntityNotFoundException;
+import br.com.loveanddonateapi.exception.ErrorResponse;
+import br.com.loveanddonateapi.exception.InvalidFileException;
+import br.com.loveanddonateapi.exception.InvalidJwtAuthenticationException;
+import br.com.loveanddonateapi.exception.user.PasswordValidationException;
 import br.com.loveanddonateapi.exception.user.UserExistsException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -50,6 +55,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler( InvalidFileException.class )
     public ResponseEntity< ErrorResponse > uploadSizeExceededException( InvalidFileException e, HttpServletRequest request ) {
         return ResponseEntity.status( HttpStatus.BAD_REQUEST.value() )
+                .body( new ErrorResponse( e.getMessage(), request.getRequestURI() ) );
+    }
+
+    @ExceptionHandler( PasswordValidationException.class )
+    public ResponseEntity< ErrorResponse > passwordValidationException( PasswordValidationException e, HttpServletRequest request ) {
+        return ResponseEntity.status( HttpStatus.UNAUTHORIZED.value() )
                 .body( new ErrorResponse( e.getMessage(), request.getRequestURI() ) );
     }
 
