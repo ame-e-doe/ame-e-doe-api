@@ -25,10 +25,9 @@ public class SaleService implements BaseService<SaleResponseDTO> {
     @Autowired
     JwtUtils jwtUtils;
 
-    public SaleResponseDTO createSale(SaleCreateDTO dto, String token) {
-        Long userId = Long.parseLong(jwtUtils.getUserFromJwtToken(token));
+    public SaleResponseDTO createSale(SaleCreateDTO dto, Long idUser) {
         Sale sale = dto.asEntity(dto);
-        User user = userService.getById(userId);
+        User user = userService.getById(idUser);
         sale.setUser(user);
         return new SaleResponseDTO(saleRepository.save(sale));
     }
@@ -45,10 +44,9 @@ public class SaleService implements BaseService<SaleResponseDTO> {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Pedido com identificador [%d] não encontrado.", id)));
     }
 
-    @Override
-    public List<SaleResponseDTO> getAll(String token) {
-        Long userId = Long.parseLong(jwtUtils.getUserFromJwtToken(token));
-        return saleRepository.findAllByUserId(userId)
+    public List<SaleResponseDTO> getAll(Long idUser) {
+        //User user = userService.getById( idUser );
+        return saleRepository.findAllByUserId(idUser)
                 .stream()
                 .map(sale -> new SaleResponseDTO(sale))
                 .collect(Collectors.toList());
