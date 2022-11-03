@@ -112,7 +112,7 @@ public class CardServiceTest {
     }
 
     @Test
-    @DisplayName( "deve consultar cartao por id valido" )
+    @DisplayName( "deve consultar por id cartao valido" )
     public void deveConsultarPorIdValido() {
 
         Long idCard = 1L;
@@ -138,7 +138,7 @@ public class CardServiceTest {
     }
 
     @Test
-    @DisplayName( "deve consultar cartao por id invalido" )
+    @DisplayName( "deve consultar por id cartao nvalido" )
     public void deveConsultarPorIdInvalido() {
 
         Long idCard = 1L;
@@ -190,7 +190,7 @@ public class CardServiceTest {
     }
 
     @Test
-    @DisplayName( "deve deletar pelo id cartao" )
+    @DisplayName( "deve deletar pelo id cartao valido" )
     public void deveDeletarComSucesso() {
 
         Card card = generateValidCard();
@@ -206,7 +206,7 @@ public class CardServiceTest {
     }
 
     @Test
-    @DisplayName( "erro ao deletar cartão" )
+    @DisplayName( "deve lancar erro ao deletar cartão inexistente" )
     public void deveLancarErroAoDeletarCartao() {
 
         Long idCard = 1L;
