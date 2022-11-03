@@ -164,9 +164,8 @@ public class CardServiceTest {
 
         cardList.add( card );
 
-        List<Card> ca = cardList;
-
-        when( cardRepository.findCardsByUserId( user.getId() ) ).thenReturn( Optional.of( ca ) );
+        when( cardRepository.findCardsByUserId( user.getId() ) )
+                .thenReturn( cardList );
 
         List< CardDTO > cardDTOList = cardService.getAll( user.getId() );
 
@@ -181,7 +180,7 @@ public class CardServiceTest {
         User user = UserUtils.createValidUser();
 
         when( cardRepository.findCardsByUserId( user.getId() ) )
-                .thenReturn( Optional.empty() );
+                .thenReturn( null );
 
         Throwable t = assertThrows( EntityNotFoundException.class,
                 () -> cardService.getAll( user.getId() ) );
@@ -215,7 +214,6 @@ public class CardServiceTest {
         Throwable t = assertThrows( EntityNotFoundException.class, () -> cardService.delete( idCard ) );
 
         assertTrue( t.getMessage().contains( String.format( "Cartão com identificador [%d] não encontrado.", idCard ) ) );
-
 
     }
 

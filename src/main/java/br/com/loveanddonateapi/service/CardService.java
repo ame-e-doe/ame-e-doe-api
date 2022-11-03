@@ -57,16 +57,18 @@ public class CardService {
     public List< CardDTO > getAll( Long idUser ) {
         log.info( "search cards for user id {}", idUser );
 
-        List< CardDTO > cardDTOList = cardRepository
-                .findCardsByUserId( idUser )
-                .stream()
-                .map( card -> new CardDTO( ( Card ) card ) )
-                .collect( Collectors.toList() );
+        List< Card > cardList = cardRepository.findCardsByUserId( idUser );
 
-        if( Objects.isNull( cardDTOList ) || cardDTOList.isEmpty() ) {
+        if( Objects.isNull( cardList ) || cardList.isEmpty() ) {
             log.error( "no cards found by user id {}", idUser );
             throw new EntityNotFoundException( "Nenhum cartão encontrado para o usuário." );
         }
+
+        List< CardDTO > cardDTOList = cardList
+                .stream()
+                .map( card -> new CardDTO( card ) )
+                .collect( Collectors.toList() );
+
         log.info( "cards found: " );
         return cardDTOList;
     }
