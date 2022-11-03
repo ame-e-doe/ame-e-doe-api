@@ -1,6 +1,7 @@
 package br.com.loveanddonateapi.controller;
 
 import br.com.loveanddonateapi.dto.CardDTO;
+import br.com.loveanddonateapi.dto.response.MessageResponse;
 import br.com.loveanddonateapi.mapper.CardMapper;
 import br.com.loveanddonateapi.service.CardService;
 import io.swagger.annotations.Api;
@@ -50,10 +51,8 @@ public class CardController {
     @ApiOperation( value = "Delete pelo identificado do cartão" )
     @DeleteMapping( "/{idCard}" )
     public ResponseEntity< ? > deleteCard( @PathVariable Long idCard ) {
-        cardService.delete( idCard );
-        return ResponseEntity
-                .noContent()
-                .build();
+        MessageResponse messageResponse = cardService.delete( idCard );
+        return new ResponseEntity<>( messageResponse, HttpStatus.NO_CONTENT );
     }
 
 }
