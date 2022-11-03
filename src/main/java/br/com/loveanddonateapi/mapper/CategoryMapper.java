@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor( access = AccessLevel.PRIVATE )
 public class CategoryMapper {
 
-    public static CategoryDTO categoryEntityToDTO( Category category ) {
+    public static CategoryDTO categoryEntityToDTO(  Category category ) {
         return CategoryDTO.builder()
+                .id( category.getId() )
                 .description( category.getDescription() )
                 .build();
     }

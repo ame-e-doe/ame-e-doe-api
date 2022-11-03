@@ -36,13 +36,14 @@ public class CategoryServiceTest {
 
         Category category = createValidCategoryWithIdAndDesc( 1L, "Imagens" );
 
-        when( categoryRepository.findByCategoryId( category.getId() ) )
+        when( categoryRepository.findAllById( category.getId() ) )
                 .thenReturn( category );
 
         CategoryDTO categoryDTO = categoryService.getById( category.getId() );
 
         assertThat( categoryDTO ).isNotNull();
         assertThat( categoryDTO.getDescription() ).isEqualTo( category.getDescription() );
+        assertThat( categoryDTO.getId() ).isEqualTo( category.getId() );
 
     }
 

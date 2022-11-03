@@ -20,7 +20,7 @@ public class CategoryService {
 
     public CategoryDTO getById( Long id ) throws EntityNotFoundException {
 
-        Category category = categoryRepository.findByCategoryId( id );
+        Category category = categoryRepository.findAllById( id );
 
         if( Objects.isNull( category ) ) {
             throw new EntityNotFoundException( "Categoria não localizada." );
