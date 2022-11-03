@@ -1,5 +1,6 @@
 package br.com.loveanddonateapi.controller;
 
+import br.com.loveanddonateapi.dto.CategoryDTO;
 import br.com.loveanddonateapi.models.Category;
 import br.com.loveanddonateapi.service.CategoryService;
 import io.swagger.annotations.Api;
@@ -21,7 +22,7 @@ public class CategoryController {
 
     @ApiOperation( value = "Consulta categoria pelo identificador" )
     @GetMapping( "/{idCategory}" )
-    public ResponseEntity< Category > getById( @PathVariable Long idCategory ) {
+    public ResponseEntity< CategoryDTO > getById( @PathVariable Long idCategory ) {
         return ResponseEntity
                 .ok( categoryService
                         .getById( idCategory ) );
@@ -29,7 +30,7 @@ public class CategoryController {
 
     @ApiOperation( value = "Lista todas categorias" )
     @GetMapping( "/list" )
-    public ResponseEntity< List< Category > > getAll() {
+    public ResponseEntity< List< CategoryDTO > > getAll() {
         return ResponseEntity
                 .ok( categoryService
                         .getAll() );
