@@ -10,9 +10,9 @@ import br.com.loveanddonateapi.models.enums.ERole;
 import br.com.loveanddonateapi.repository.RoleRepository;
 import br.com.loveanddonateapi.repository.UserRepository;
 import br.com.loveanddonateapi.utils.EmailUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,14 +28,16 @@ import java.util.Objects;
 @Slf4j
 @Transactional
 @Service
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
-    private final CartService cartService;
+    @Autowired
+    CartService cartService;
 
     public String registerUser( User user ) {
 
