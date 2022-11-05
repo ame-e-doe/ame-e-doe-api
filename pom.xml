@@ -10,7 +10,7 @@
     </parent>
     <groupId>LoveAndDonate</groupId>
     <artifactId>loveanddonate-api</artifactId>
-    <version>4.1.2</version>
+    <version>4.1.3</version>
     <name>loveanddonate-api</name>
     <description>Register And Management Users Love Donate API</description>
 
