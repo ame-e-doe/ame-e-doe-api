@@ -5,6 +5,7 @@ import br.com.loveanddonateapi.exception.EntityNotFoundException;
 import br.com.loveanddonateapi.models.Category;
 import br.com.loveanddonateapi.repository.CategoryRepository;
 import br.com.loveanddonateapi.service.CategoryService;
+import br.com.loveanddonateapi.unit.utils.DataUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class CategoryServiceTest {
     @DisplayName( "deve consultar categoria por id com sucesso" )
     public void deveConsultarCategoriaComSucesso() {
 
-        Category category = createValidCategoryWithIdAndDesc( 1L, "Imagens" );
+        Category category = DataUtils.createValidCategoryWithIdAndDesc( 1L, "Imagens" );
 
         when( categoryRepository.findAllById( category.getId() ) )
                 .thenReturn( category );
@@ -64,8 +65,8 @@ public class CategoryServiceTest {
     @DisplayName( "deve listar todas as categorias" )
     public void deveListarTodasCategorias() {
 
-        Category category1 = createValidCategoryWithIdAndDesc( 1L, "Imagens" );
-        Category category2 = createValidCategoryWithIdAndDesc( 2L, "Videos" );
+        Category category1 = DataUtils.createValidCategoryWithIdAndDesc( 1L, "Imagens" );
+        Category category2 = DataUtils.createValidCategoryWithIdAndDesc( 2L, "Videos" );
 
         List< Category > categoryList = new ArrayList<>();
 
@@ -88,13 +89,6 @@ public class CategoryServiceTest {
 
         assertTrue( t.getMessage().contains( "Nenhuma categoria encontrada." ) );
 
-    }
-
-    private Category createValidCategoryWithIdAndDesc( Long id, String desc ) {
-        return Category.builder()
-                .id( id )
-                .description( desc )
-                .build();
     }
 
 }

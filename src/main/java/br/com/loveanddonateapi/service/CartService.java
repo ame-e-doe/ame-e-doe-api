@@ -1,6 +1,7 @@
 package br.com.loveanddonateapi.service;
 
 import br.com.loveanddonateapi.exception.EntityNotFoundException;
+import br.com.loveanddonateapi.mapper.DigitalProductMapper;
 import br.com.loveanddonateapi.models.Cart;
 import br.com.loveanddonateapi.models.CartItem;
 import br.com.loveanddonateapi.models.DigitalProduct;
@@ -46,7 +47,8 @@ public class CartService {
         List< CartItem > itens = cart.getListCartItens();
 
         log.info( "find product by id {}", idProduct );
-        DigitalProduct digitalProduct = digitalProductService.findById( idProduct );
+        DigitalProduct digitalProduct = DigitalProductMapper
+                .digitalProductDTOToEntity( digitalProductService.getById( idProduct ) );
 
         CartItem cartItem = new CartItem();
 

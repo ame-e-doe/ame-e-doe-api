@@ -43,7 +43,7 @@ public class UserControllerTest extends MapperUtils {
     UserService userService;
 
     @Test
-    @DisplayName( "Deve criar usuário com sucesso" )
+    @DisplayName( "Deve criar usuario com sucesso" )
     public void deveCriarUsuarioComSucesso() throws Exception {
 
         UserDTO userDTO = createValidUser();
@@ -60,7 +60,7 @@ public class UserControllerTest extends MapperUtils {
     }
 
     @Test
-    @DisplayName( "deve lançar erro de validação ao tentar salvar um user com dados insuficientes" )
+    @DisplayName( "deve lancar erro de validacao ao tentar salvar um user com dados insuficientes" )
     public void deveLancarErroAoCadastrarUsuarioInvalido() throws Exception {
 
         String json = new ObjectMapper().writeValueAsString( new UserDTO() );
@@ -75,7 +75,7 @@ public class UserControllerTest extends MapperUtils {
     }
 
     @Test
-    @DisplayName( "deve lançar erro ao tentar cadastrar usuário com senha inválida" )
+    @DisplayName( "deve lancar erro ao tentar cadastrar usuario com senha invalida" )
     public void deveLancarErroAoCadastrarUsuarioSenhaInvalida() throws Exception {
 
         UserDTO userDTO = createValidUser();
@@ -94,7 +94,7 @@ public class UserControllerTest extends MapperUtils {
     }
 
     @Test
-    @DisplayName( "deve lançar erro ao tentar cadastrar usuário com email inválido" )
+    @DisplayName( "deve lançar erro ao tentar cadastrar usuario com email invalido" )
     public void deveLancarErroAoCadastrarUsuarioEmailInvalido() throws Exception {
 
         UserDTO userDTO = createValidUser();
