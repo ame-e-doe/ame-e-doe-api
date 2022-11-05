@@ -26,6 +26,7 @@ public class Image {
     private String format;
     private Integer widht;
     private Integer height;
+    private Integer size;
 
     public Image(Map image) {
         this.name = (String) image.get("original_filename");
@@ -34,5 +35,6 @@ public class Image {
         this.format = (String) image.get("format");
         this.widht = (Integer) image.get("width");
         this.height = (Integer) image.get("height");
+        this.size = (Integer) image.get("bytes") / 1000;
     }
 }
