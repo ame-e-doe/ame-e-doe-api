@@ -9,7 +9,7 @@ import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.CardRepository;
 import br.com.loveanddonateapi.service.CardService;
 import br.com.loveanddonateapi.service.UserService;
-import br.com.loveanddonateapi.unit.utils.UserUtils;
+import br.com.loveanddonateapi.unit.utils.DataUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class CardServiceTest {
     @Test
     @DisplayName( "deve salvar um cartao com sucesso" )
     public void deveSalvarUmCartaoComSucesso() {
-        User user = UserUtils.createValidUser();
+        User user = DataUtils.createValidUser();
 
         when( userService.getById( 1L ) ).thenReturn( user );
 
@@ -71,7 +71,7 @@ public class CardServiceTest {
     @Test
     @DisplayName( "deve lancar erro ao salvar cartao que ja existe" )
     public void deveLancarErroAoSalvarCartaoExistente() throws EntityExistValidateException {
-        User user = UserUtils.createValidUser();
+        User user = DataUtils.createValidUser();
 
         when( userService.getById( 1L ) ).thenReturn( user );
 
@@ -138,7 +138,7 @@ public class CardServiceTest {
     }
 
     @Test
-    @DisplayName( "deve consultar por id cartao nvalido" )
+    @DisplayName( "deve consultar por id cartao invalido" )
     public void deveConsultarPorIdInvalido() {
 
         Long idCard = 1L;
@@ -156,7 +156,7 @@ public class CardServiceTest {
 
         List< Card > cardList = new ArrayList<>();
 
-        User user = UserUtils.createValidUser();
+        User user = DataUtils.createValidUser();
         Card card = generateValidCard();
 
         card.setUser( user );
@@ -177,7 +177,7 @@ public class CardServiceTest {
     @DisplayName( "deve lancar erro ao listar cartoes de usuario que nao possui" )
     public void deveLancarErroUsuarioNaoPossuiCartoes() throws EntityNotFoundException {
 
-        User user = UserUtils.createValidUser();
+        User user = DataUtils.createValidUser();
 
         when( cardRepository.findCardsByUserId( user.getId() ) )
                 .thenReturn( null );
@@ -206,7 +206,7 @@ public class CardServiceTest {
     }
 
     @Test
-    @DisplayName( "deve lancar erro ao deletar cartão inexistente" )
+    @DisplayName( "deve lancar erro ao deletar cartao inexistente" )
     public void deveLancarErroAoDeletarCartao() {
 
         Long idCard = 1L;

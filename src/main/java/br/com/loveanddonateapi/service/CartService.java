@@ -1,14 +1,15 @@
 package br.com.loveanddonateapi.service;
 
 import br.com.loveanddonateapi.exception.EntityNotFoundException;
+import br.com.loveanddonateapi.mapper.DigitalProductMapper;
 import br.com.loveanddonateapi.models.Cart;
 import br.com.loveanddonateapi.models.CartItem;
 import br.com.loveanddonateapi.models.DigitalProduct;
 import br.com.loveanddonateapi.models.User;
 import br.com.loveanddonateapi.repository.CartItemRepository;
 import br.com.loveanddonateapi.repository.CartRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,15 +17,17 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class CartService {
 
-    private final DigitalProductService digitalProductService;
+    @Autowired
+    private DigitalProductService digitalProductService;
 
-    private final CartRepository cartRepository;
+    @Autowired
+    private CartRepository cartRepository;
 
-    private final CartItemRepository cartItemRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     public Cart addCartItem( Long idUser, Long idProduct ) {
 
@@ -44,7 +47,8 @@ public class CartService {
         List< CartItem > itens = cart.getListCartItens();
 
         log.info( "find product by id {}", idProduct );
-        DigitalProduct digitalProduct = digitalProductService.findById( idProduct );
+        DigitalProduct digitalProduct = DigitalProductMapper
+                .digitalProductDTOToEntity( digitalProductService.getById( idProduct ) );
 
         CartItem cartItem = new CartItem();
 

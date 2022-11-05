@@ -1,5 +1,6 @@
 package br.com.loveanddonateapi.dto.response;
 
+import br.com.loveanddonateapi.mapper.DigitalProductMapper;
 import br.com.loveanddonateapi.models.Sale;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class SaleResponseDTO {
         this.setValue(entity.getValue());
         this.setProducts(entity.getProducts()
                 .stream()
-                .map(product -> new DigitalProductResponseDTO(product))
+                .map( product -> DigitalProductMapper.digitalProductEntityToDTO( product ) )
                 .collect(Collectors.toSet()));
     }
 
