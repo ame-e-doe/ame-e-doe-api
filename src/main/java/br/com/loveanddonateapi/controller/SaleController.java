@@ -23,14 +23,14 @@ public class SaleController {
 
     @ApiOperation(value = "Cadastra uma nova venda")
     @PostMapping("/create")
-    public ResponseEntity<SaleResponseDTO> create(@Valid @RequestBody SaleCreateDTO createSaleDto, @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(this.saleService.createSale(createSaleDto, token));
+    public ResponseEntity<SaleResponseDTO> create(@Valid @RequestBody SaleCreateDTO createSaleDto, @RequestHeader( "idUser" ) Long idUser) {
+        return ResponseEntity.ok(this.saleService.createSale(createSaleDto, idUser));
     }
 
     @ApiOperation(value = "Lista todas os pedidos de um usuario")
     @GetMapping("/list")
-    public ResponseEntity<List<SaleResponseDTO>> getAllSales(@RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(this.saleService.getAll(token));
+    public ResponseEntity<List<SaleResponseDTO>> getAllSales(@RequestHeader( "idUser" ) Long idUser) {
+        return ResponseEntity.ok(this.saleService.getAll(idUser));
     }
 
     @ApiOperation(value = "Consulta uma venda pelo identificador")
