@@ -16,13 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,6 +25,7 @@ import javax.validation.Valid;
 @Api( tags = "{Controle de usuário}" )
 @Validated
 @RequiredArgsConstructor
+@CrossOrigin( origins = "*", maxAge = 3600 )
 public class UserController {
 
     private final UserService userService;
@@ -74,10 +69,16 @@ public class UserController {
     @DeleteMapping( "/delete" )
     @ApiOperation( "Delete user" )
     public ResponseEntity< ? > delete( @Valid @RequestHeader( "idUser" ) Long idUser ) {
-
         return new ResponseEntity<>( userService.deleteUser( idUser ),
                 HttpStatus.NO_CONTENT );
+    }
 
+    @GetMapping( "/me" )
+    @ApiOperation( "Get info user" )
+    public ResponseEntity< ? > getById( @Valid @RequestHeader( "idUser" ) Long idUser ) {
+        return ResponseEntity
+                .ok( userService
+                        .getById( idUser ) );
     }
 
 }
