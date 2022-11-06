@@ -124,7 +124,7 @@ public class UserService implements UserDetailsService {
 
     public User getById( Long id ) {
         log.info( "localize user {} by id", id );
-        return userRepository.findById( id ).orElseThrow(() -> new UserExistsException("Usuario não encontrado!"));
+        return userRepository.getById( id );
     }
 
     public void saveRole( Role role ) {
