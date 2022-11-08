@@ -1,6 +1,7 @@
 package br.com.loveanddonateapi.controller;
 
 import br.com.loveanddonateapi.dto.response.MessageResponse;
+import br.com.loveanddonateapi.dto.response.UserResponseDTO;
 import br.com.loveanddonateapi.dto.user.PasswordDTO;
 import br.com.loveanddonateapi.dto.user.UpdateUserDTO;
 import br.com.loveanddonateapi.dto.user.UserDTO;
@@ -75,10 +76,10 @@ public class UserController {
 
     @GetMapping( "/me" )
     @ApiOperation( "Get info user" )
-    public ResponseEntity< ? > getById( @Valid @RequestHeader( "idUser" ) Long idUser ) {
+    public ResponseEntity< UserResponseDTO > getById(@Valid @RequestHeader( "idUser" ) Long idUser ) {
         return ResponseEntity
                 .ok( userService
-                        .getById( idUser ) );
+                        .findUserById( idUser ) );
     }
 
 }
