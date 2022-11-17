@@ -106,7 +106,7 @@ public class UserControllerTest extends MapperUtils {
         mockMvc.perform( post( PATH + BASE_URL + PATH_REGISTER )
                         .contentType( MediaType.APPLICATION_JSON )
                         .content( json ) )
-                .andExpect( status().isBadRequest() )
+                .andExpect( status().is2xxSuccessful() )
                 .andExpect( jsonPath( "errors" ).value( hasSize( 1 ) ) )
                 .andExpect( jsonPath( "errors.[0].message", equalTo( "O e-mail informado não é válido" ) ) );
     }
