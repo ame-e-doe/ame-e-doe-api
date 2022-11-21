@@ -119,4 +119,8 @@ public class CartService {
         log.info( "create cart for user {} in database", user.getUsername() );
         cartRepository.save( new Cart( user ) );
     }
+
+    public void updateCart(Cart cart) {
+        this.cartRepository.save(cart);
+    }
 }

@@ -3,8 +3,10 @@ package br.com.loveanddonateapi.service;
 import br.com.loveanddonateapi.dto.SaleCreateDTO;
 import br.com.loveanddonateapi.dto.response.SaleResponseDTO;
 import br.com.loveanddonateapi.exception.EntityNotFoundException;
+import br.com.loveanddonateapi.models.Cart;
 import br.com.loveanddonateapi.models.Sale;
 import br.com.loveanddonateapi.models.User;
+import br.com.loveanddonateapi.repository.CartItemRepository;
 import br.com.loveanddonateapi.repository.SaleRepository;
 import br.com.loveanddonateapi.configuration.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,24 @@ public class SaleService implements BaseService<SaleResponseDTO> {
     UserService userService;
     @Autowired
     JwtUtils jwtUtils;
+    @Autowired
+    CartService cartService;
+    @Autowired
+    CartItemRepository cartItemRepository;
 
     public SaleResponseDTO createSale(SaleCreateDTO dto, Long idUser) {
         Sale sale = dto.asEntity(dto);
         User user = userService.getById(idUser);
+        Cart cart = cartService.getCartByUser(user.getId());
+
+        cart.setTotalPrice(0.0);
+        cart.setUser(user);
+        
+        cartItemRepository.deleteAllByIdCart(cart.getId());
+        cartService.updateCart(cart);
+
         sale.setUser(user);
+
         return new SaleResponseDTO(saleRepository.save(sale));
     }
 
