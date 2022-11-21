@@ -11,6 +11,7 @@ import br.com.loveanddonateapi.repository.SaleRepository;
 import br.com.loveanddonateapi.configuration.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +32,7 @@ public class SaleService implements BaseService<SaleResponseDTO> {
     @Autowired
     CartItemRepository cartItemRepository;
 
+    @Transactional
     public SaleResponseDTO createSale(SaleCreateDTO dto, Long idUser) {
         Sale sale = dto.asEntity(dto);
         User user = userService.getById(idUser);
@@ -38,7 +40,7 @@ public class SaleService implements BaseService<SaleResponseDTO> {
 
         cart.setTotalPrice(0.0);
         cart.setUser(user);
-        
+
         cartItemRepository.deleteAllByIdCart(cart.getId());
         cartService.updateCart(cart);
 
